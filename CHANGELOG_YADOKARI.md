@@ -10,5 +10,5 @@
 -->
 
 
-## nade 1.0.0
-- Just fork
+## yadokari 1.0.0
+ - カスタムフォント機能の追加 https://github.com/yadokari-party/yadokari-misskey/pull/1
