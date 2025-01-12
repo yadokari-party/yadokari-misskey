@@ -156,10 +156,10 @@ async function tokenDone() {
 
 function downloadBackupCodes() {
 	if (backupCodes.value !== undefined) {
-		const txtBlob = new Blob([backupCodes.value.reduce((acc, code, i) => `${acc}#${i + 1}. ${code}\r\n`, `${config.hostname} 2FA Backup Codes\r\n\r\n`)], { type: 'text/plain' });
+		const txtBlob = new Blob([backupCodes.value.join('\n')], { type: 'text/plain' });
 		const dummya = document.createElement('a');
 		dummya.href = URL.createObjectURL(txtBlob);
-		dummya.download = `${config.hostname}-${$i.username}-2fa-backup-codes.txt`;
+		dummya.download = `${$i.username}-2fa-backup-codes.txt`;
 		dummya.click();
 	}
 }
