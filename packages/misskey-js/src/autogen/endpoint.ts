@@ -60,6 +60,12 @@ import type {
 	AdminEmojiSetCategoryBulkRequest,
 	AdminEmojiSetLicenseBulkRequest,
 	AdminEmojiUpdateRequest,
+	AdminEmojiApplicationsRequest,
+	AdminEmojiApplicationsResponse,
+	AdminEmojiApplicationAcceptRequest,
+	AdminEmojiApplicationAcceptResponse,
+	AdminEmojiApplicationRejectRequest,
+	AdminEmojiApplicationRejectResponse,
 	AdminFederationDeleteAllFilesRequest,
 	AdminFederationRefreshRemoteInstanceMetadataRequest,
 	AdminFederationRemoveAllFollowingRequest,
@@ -393,6 +399,11 @@ import type {
 	EmojisResponse,
 	EmojiRequest,
 	EmojiResponse,
+	EmojiApplicationsResponse,
+	EmojiApplicationCreateRequest,
+	EmojiApplicationCreateResponse,
+	EmojiApplicationUpdateRequest,
+	EmojiApplicationUpdateResponse,
 	MiauthGenTokenRequest,
 	MiauthGenTokenResponse,
 	MuteCreateRequest,
@@ -624,6 +635,9 @@ export type Endpoints = {
 	'admin/emoji/set-category-bulk': { req: AdminEmojiSetCategoryBulkRequest; res: EmptyResponse };
 	'admin/emoji/set-license-bulk': { req: AdminEmojiSetLicenseBulkRequest; res: EmptyResponse };
 	'admin/emoji/update': { req: AdminEmojiUpdateRequest; res: EmptyResponse };
+	'admin/emoji-applications': { req: AdminEmojiApplicationsRequest; res: AdminEmojiApplicationsResponse };
+	'admin/emoji-application/accept': { req: AdminEmojiApplicationAcceptRequest; res: AdminEmojiApplicationAcceptResponse };
+	'admin/emoji-application/reject': { req: AdminEmojiApplicationRejectRequest; res: AdminEmojiApplicationRejectResponse };
 	'admin/federation/delete-all-files': { req: AdminFederationDeleteAllFilesRequest; res: EmptyResponse };
 	'admin/federation/refresh-remote-instance-metadata': { req: AdminFederationRefreshRemoteInstanceMetadataRequest; res: EmptyResponse };
 	'admin/federation/remove-all-following': { req: AdminFederationRemoveAllFollowingRequest; res: EmptyResponse };
@@ -846,6 +860,9 @@ export type Endpoints = {
 	'meta': { req: MetaRequest; res: MetaResponse };
 	'emojis': { req: EmptyRequest; res: EmojisResponse };
 	'emoji': { req: EmojiRequest; res: EmojiResponse };
+	'emoji-applications': { req: EmptyRequest; res: EmojiApplicationsResponse };
+	'emoji-application/create': { req: EmojiApplicationCreateRequest; res: EmojiApplicationCreateResponse };
+	'emoji-application/update': { req: EmojiApplicationUpdateRequest; res: EmojiApplicationUpdateResponse };
 	'miauth/gen-token': { req: MiauthGenTokenRequest; res: MiauthGenTokenResponse };
 	'mute/create': { req: MuteCreateRequest; res: EmptyResponse };
 	'mute/delete': { req: MuteDeleteRequest; res: EmptyResponse };

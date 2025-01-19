@@ -53,6 +53,9 @@ import * as ep___admin_emoji_setAliasesBulk from './endpoints/admin/emoji/set-al
 import * as ep___admin_emoji_setCategoryBulk from './endpoints/admin/emoji/set-category-bulk.js';
 import * as ep___admin_emoji_setLicenseBulk from './endpoints/admin/emoji/set-license-bulk.js';
 import * as ep___admin_emoji_update from './endpoints/admin/emoji/update.js';
+import * as ep___admin_emojiApplication_list from './endpoints/admin/emoji-application/list.js';
+import * as ep___admin_emojiApplication_accept from './endpoints/admin/emoji-application/accept.js';
+import * as ep___admin_emojiApplication_reject from './endpoints/admin/emoji-application/reject.js';
 import * as ep___admin_federation_deleteAllFiles from './endpoints/admin/federation/delete-all-files.js';
 import * as ep___admin_federation_refreshRemoteInstanceMetadata
 	from './endpoints/admin/federation/refresh-remote-instance-metadata.js';
@@ -276,6 +279,9 @@ import * as ep___invite_limit from './endpoints/invite/limit.js';
 import * as ep___meta from './endpoints/meta.js';
 import * as ep___emojis from './endpoints/emojis.js';
 import * as ep___emoji from './endpoints/emoji.js';
+import * as ep___emojiApplication_create from './endpoints/emoji-application/create.js';
+import * as ep___emojiApplication_update from './endpoints/emoji-application/update.js';
+import * as ep___emojiApplication_list from './endpoints/emoji-application/list.js';
 import * as ep___miauth_genToken from './endpoints/miauth/gen-token.js';
 import * as ep___mute_create from './endpoints/mute/create.js';
 import * as ep___mute_delete from './endpoints/mute/delete.js';
@@ -440,6 +446,9 @@ const eps = [
 	['admin/emoji/set-category-bulk', ep___admin_emoji_setCategoryBulk],
 	['admin/emoji/set-license-bulk', ep___admin_emoji_setLicenseBulk],
 	['admin/emoji/update', ep___admin_emoji_update],
+	['admin/emoji-applications', ep___admin_emojiApplication_list],
+	['admin/emoji-application/accept', ep___admin_emojiApplication_accept],
+	['admin/emoji-application/reject', ep___admin_emojiApplication_reject],
 	['admin/federation/delete-all-files', ep___admin_federation_deleteAllFiles],
 	['admin/federation/refresh-remote-instance-metadata', ep___admin_federation_refreshRemoteInstanceMetadata],
 	['admin/federation/remove-all-following', ep___admin_federation_removeAllFollowing],
@@ -662,6 +671,9 @@ const eps = [
 	['meta', ep___meta],
 	['emojis', ep___emojis],
 	['emoji', ep___emoji],
+	['emoji-applications', ep___emojiApplication_list],
+	['emoji-application/create', ep___emojiApplication_create],
+	['emoji-application/update', ep___emojiApplication_update],
 	['miauth/gen-token', ep___miauth_genToken],
 	['mute/create', ep___mute_create],
 	['mute/delete', ep___mute_delete],

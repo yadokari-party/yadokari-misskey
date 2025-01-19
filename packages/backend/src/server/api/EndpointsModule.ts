@@ -48,6 +48,9 @@ import * as ep___admin_emoji_setAliasesBulk from './endpoints/admin/emoji/set-al
 import * as ep___admin_emoji_setCategoryBulk from './endpoints/admin/emoji/set-category-bulk.js';
 import * as ep___admin_emoji_setLicenseBulk from './endpoints/admin/emoji/set-license-bulk.js';
 import * as ep___admin_emoji_update from './endpoints/admin/emoji/update.js';
+import * as ep___admin_emojiApplication_list from './endpoints/admin/emoji-application/list.js';
+import * as ep___admin_emojiApplication_accept from './endpoints/admin/emoji-application/accept.js';
+import * as ep___admin_emojiApplication_reject from './endpoints/admin/emoji-application/reject.js';
 import * as ep___admin_federation_deleteAllFiles from './endpoints/admin/federation/delete-all-files.js';
 import * as ep___admin_federation_refreshRemoteInstanceMetadata from './endpoints/admin/federation/refresh-remote-instance-metadata.js';
 import * as ep___admin_federation_removeAllFollowing from './endpoints/admin/federation/remove-all-following.js';
@@ -270,6 +273,9 @@ import * as ep___invite_limit from './endpoints/invite/limit.js';
 import * as ep___meta from './endpoints/meta.js';
 import * as ep___emojis from './endpoints/emojis.js';
 import * as ep___emoji from './endpoints/emoji.js';
+import * as ep___emojiApplication_create from './endpoints/emoji-application/create.js';
+import * as ep___emojiApplication_update from './endpoints/emoji-application/update.js';
+import * as ep___emojiApplication_list from './endpoints/emoji-application/list.js';
 import * as ep___miauth_genToken from './endpoints/miauth/gen-token.js';
 import * as ep___mute_create from './endpoints/mute/create.js';
 import * as ep___mute_delete from './endpoints/mute/delete.js';
@@ -436,6 +442,9 @@ const $admin_emoji_setAliasesBulk: Provider = { provide: 'ep:admin/emoji/set-ali
 const $admin_emoji_setCategoryBulk: Provider = { provide: 'ep:admin/emoji/set-category-bulk', useClass: ep___admin_emoji_setCategoryBulk.default };
 const $admin_emoji_setLicenseBulk: Provider = { provide: 'ep:admin/emoji/set-license-bulk', useClass: ep___admin_emoji_setLicenseBulk.default };
 const $admin_emoji_update: Provider = { provide: 'ep:admin/emoji/update', useClass: ep___admin_emoji_update.default };
+const $admin_emojiApplication_list: Provider = { provide: 'ep:admin/emoji-applications', useClass: ep___admin_emojiApplication_list.default };
+const $admin_emojiApplication_accept: Provider = { provide: 'ep:admin/emoji-application/accept', useClass: ep___admin_emojiApplication_accept.default };
+const $admin_emojiApplication_reject: Provider = { provide: 'ep:admin/emoji-application/reject', useClass: ep___admin_emojiApplication_reject.default };
 const $admin_federation_deleteAllFiles: Provider = { provide: 'ep:admin/federation/delete-all-files', useClass: ep___admin_federation_deleteAllFiles.default };
 const $admin_federation_refreshRemoteInstanceMetadata: Provider = { provide: 'ep:admin/federation/refresh-remote-instance-metadata', useClass: ep___admin_federation_refreshRemoteInstanceMetadata.default };
 const $admin_federation_removeAllFollowing: Provider = { provide: 'ep:admin/federation/remove-all-following', useClass: ep___admin_federation_removeAllFollowing.default };
@@ -658,6 +667,9 @@ const $invite_limit: Provider = { provide: 'ep:invite/limit', useClass: ep___inv
 const $meta: Provider = { provide: 'ep:meta', useClass: ep___meta.default };
 const $emojis: Provider = { provide: 'ep:emojis', useClass: ep___emojis.default };
 const $emoji: Provider = { provide: 'ep:emoji', useClass: ep___emoji.default };
+const $emojiApplications_list = { provide: 'ep:emoji-applications', useClass: ep___emojiApplication_list.default };
+const $emojiApplications_create: Provider = { provide: 'ep:emoji-application/create', useClass: ep___emojiApplication_create.default };
+const $emojiApplications_update: Provider = { provide: 'ep:emoji-application/update', useClass: ep___emojiApplication_update.default };
 const $miauth_genToken: Provider = { provide: 'ep:miauth/gen-token', useClass: ep___miauth_genToken.default };
 const $mute_create: Provider = { provide: 'ep:mute/create', useClass: ep___mute_create.default };
 const $mute_delete: Provider = { provide: 'ep:mute/delete', useClass: ep___mute_delete.default };
@@ -828,6 +840,9 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$admin_emoji_setCategoryBulk,
 		$admin_emoji_setLicenseBulk,
 		$admin_emoji_update,
+		$admin_emojiApplication_list,
+		$admin_emojiApplication_accept,
+		$admin_emojiApplication_reject,
 		$admin_federation_deleteAllFiles,
 		$admin_federation_refreshRemoteInstanceMetadata,
 		$admin_federation_removeAllFollowing,
@@ -1050,6 +1065,9 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$meta,
 		$emojis,
 		$emoji,
+		$emojiApplications_list,
+		$emojiApplications_create,
+		$emojiApplications_update,
 		$miauth_genToken,
 		$mute_create,
 		$mute_delete,
@@ -1214,6 +1232,9 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$admin_emoji_setCategoryBulk,
 		$admin_emoji_setLicenseBulk,
 		$admin_emoji_update,
+		$admin_emojiApplication_list,
+		$admin_emojiApplication_accept,
+		$admin_emojiApplication_reject,
 		$admin_federation_deleteAllFiles,
 		$admin_federation_refreshRemoteInstanceMetadata,
 		$admin_federation_removeAllFollowing,
@@ -1435,6 +1456,9 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$meta,
 		$emojis,
 		$emoji,
+		$emojiApplications_list,
+		$emojiApplications_create,
+		$emojiApplications_update,
 		$miauth_genToken,
 		$mute_create,
 		$mute_delete,

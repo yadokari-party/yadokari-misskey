@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { Provider } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import {
@@ -28,6 +27,7 @@ import {
 	MiDriveFile,
 	MiDriveFolder,
 	MiEmoji,
+	MiEmojiApplication,
 	MiFlash,
 	MiFlashLike,
 	MiFollowing,
@@ -77,8 +77,9 @@ import {
 	MiUserProfile,
 	MiUserPublickey,
 	MiUserSecurityKey,
-	MiWebhook
+	MiWebhook,
 } from './_.js';
+import type { Provider } from '@nestjs/common';
 import type { DataSource } from 'typeorm';
 
 const $usersRepository: Provider = {
@@ -240,6 +241,12 @@ const $instancesRepository: Provider = {
 const $emojisRepository: Provider = {
 	provide: DI.emojisRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiEmoji).extend(miRepository as MiRepository<MiEmoji>),
+	inject: [DI.db],
+};
+
+const $emojiApplicationsRepoisitory: Provider = {
+	provide: DI.emojiApplicationsRepoisitory,
+	useFactory: (db: DataSource) => db.getRepository(MiEmojiApplication).extend(miRepository as MiRepository<MiEmojiApplication>),
 	inject: [DI.db],
 };
 
@@ -525,6 +532,7 @@ const $reversiGamesRepository: Provider = {
 		$followRequestsRepository,
 		$instancesRepository,
 		$emojisRepository,
+		$emojiApplicationsRepoisitory,
 		$driveFilesRepository,
 		$driveFoldersRepository,
 		$metasRepository,
@@ -596,6 +604,7 @@ const $reversiGamesRepository: Provider = {
 		$followRequestsRepository,
 		$instancesRepository,
 		$emojisRepository,
+		$emojiApplicationsRepoisitory,
 		$driveFilesRepository,
 		$driveFoldersRepository,
 		$metasRepository,
