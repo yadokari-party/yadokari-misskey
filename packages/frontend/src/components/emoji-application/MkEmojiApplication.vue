@@ -25,7 +25,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<img v-if="emojiApplication.file != null" :src="emojiApplication.file.url" :class="$style.img" async defer/>
 				</MkFolder>
+				<MkFolder :defaultOpen="true">
+					<template #label>{{ i18n.ts.category }}</template>
+					<div>{{ emojiApplication.category }}</div>
+				</MkFolder>
+				<MkFolder :defaultOpen="true">
+					<template #label>{{ i18n.ts.tags }}</template>
+					<div>{{ emojiApplication.aliases.join(', ') }}</div>
+				</MkFolder>
+				<MkFolder :defaultOpen="true">
+					<template #label>{{ i18n.ts.license }}</template>
+					<div>{{ emojiApplication.license }}</div>
+				</MkFolder>
 				<div>
+					<span v-if="emojiApplication.isSensitive">✅</span>
+					<span v-else>❌</span>
+					{{ i18n.ts.sensitive }}
+				</div>
+				<div>
+					<span v-if="emojiApplication.localOnly">✅</span>
+					<span v-else>❌</span>
+					{{ i18n.ts.localOnly }}
 				</div>
 			</div>
 		</MkFolder>
@@ -50,7 +70,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFolder>
 	</div>
 	<template #footer>
-		<!-- accept, rejectのボタンを作る -->
 		<div v-if="emojiApplication.status === 'pending'" :class="$style.buttons">
 			<MkButton primary @click="accept"><i class="ti ti-check"></i> {{ i18n.ts.accept }}</MkButton>
 			<MkButton danger @click="reject"><i class="ti ti-x"></i> {{ i18n.ts.reject }}</MkButton>
