@@ -10687,6 +10687,52 @@ export interface Locale extends ILocale {
             "description": string;
         };
     };
+    "_emojiApplication": {
+        "_status": {
+            /**
+             * 承認待ち
+             */
+            "pending": string;
+            /**
+             * キャンセル済み
+             */
+            "canceled": string;
+            /**
+             * 承認済み
+             */
+            "accepted": string;
+            /**
+             * 拒否済み
+             */
+            "rejected": string;
+        };
+        "_list": {
+            /**
+             * カスタム絵文字申請一覧
+             */
+            "title": string;
+        };
+        /**
+         * カスタム絵文字申請
+         */
+        "title": string;
+        /**
+         * 絵文字を追加するための申請を行います。
+         */
+        "description": string;
+        /**
+         * 追加情報
+         */
+        "additionalInfo": string;
+        /**
+         * 絵文字の審査に必要なライセンスの根拠などの追加情報を記載してください。
+         */
+        "additionalInfoDescription": string;
+        /**
+         * 「{name}」の申請をキャンセルしますか？
+         */
+        "confirmCancel": ParameterizedString<"name">;
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

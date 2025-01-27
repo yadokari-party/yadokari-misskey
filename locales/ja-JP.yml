@@ -2851,3 +2851,17 @@ _remoteLookupErrors:
   _noSuchObject:
     title: "見つかりません"
     description: "要求されたリソースは見つかりませんでした。URIをもう一度お確かめください。"
+
+_emojiApplication:
+  _status:
+    pending: "承認待ち"
+    canceled: "キャンセル済み"
+    accepted: "承認済み"
+    rejected: "拒否済み"
+  _list:
+    title: "カスタム絵文字申請一覧"
+  title: "カスタム絵文字申請"
+  description: "絵文字を追加するための申請を行います。"
+  additionalInfo: "追加情報"
+  additionalInfoDescription: "絵文字の審査に必要なライセンスの根拠などの追加情報を記載してください。"
+  confirmCancel: "「{name}」の申請をキャンセルしますか？"

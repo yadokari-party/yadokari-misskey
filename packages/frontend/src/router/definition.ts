@@ -341,6 +341,15 @@ const routes: RouteDef[] = [{
 	path: '/custom-emojis-manager',
 	component: page(() => import('@/pages/custom-emojis-manager.vue')),
 }, {
+	path: '/custom-emoji-applications',
+	component: page(() => import('@/pages/custom-emoji-applications/list.vue')),
+}, {
+	path: '/custom-emoji-applications/new',
+	component: page(() => import('@/pages/custom-emoji-applications/edit.vue')),
+}, {
+	path: '/custom-emoji-applications/:emojiApplicationId/edit',
+	component: page(() => import('@/pages/custom-emoji-applications/edit.vue')),
+}, {
 	path: '/avatar-decorations',
 	name: 'avatarDecorations',
 	component: page(() => import('@/pages/avatar-decorations.vue')),
