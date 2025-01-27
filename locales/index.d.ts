@@ -10732,6 +10732,14 @@ export interface Locale extends ILocale {
          * 「{name}」の申請をキャンセルしますか？
          */
         "confirmCancel": ParameterizedString<"name">;
+        /**
+         * 「{name}」の申請を承認しますか？
+         */
+        "confirmAccept": ParameterizedString<"name">;
+        /**
+         * 「{name}」の申請を拒否しますか？
+         */
+        "confirmReject": ParameterizedString<"name">;
     };
 }
 declare const locales: {

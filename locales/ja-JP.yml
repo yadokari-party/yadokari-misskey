@@ -2865,3 +2865,5 @@ _emojiApplication:
   additionalInfo: "追加情報"
   additionalInfoDescription: "絵文字の審査に必要なライセンスの根拠などの追加情報を記載してください。"
   confirmCancel: "「{name}」の申請をキャンセルしますか？"
+  confirmAccept: "「{name}」の申請を承認しますか？"
+  confirmReject: "「{name}」の申請を拒否しますか？"

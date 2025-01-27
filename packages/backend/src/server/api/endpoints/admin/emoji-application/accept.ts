@@ -27,7 +27,7 @@ export const meta = {
 	errors: {
 		noSuchEmojiApplication: {
 			message: 'No such emoji request.',
-			code: 'NO_SUCH_emoji_application',
+			code: 'NO_SUCH_EMOJI_APPLICATION',
 			id: 'b8f9b7b1-5a1b-4f3d-8f0e-6f2e1e5b0f9e',
 		},
 		noPermission: {

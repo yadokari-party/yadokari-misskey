@@ -7,11 +7,10 @@ import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { DI } from '@/di-symbols.js';
 import { IdService } from '@/core/IdService.js';
-import type { MiDriveFile } from '@/models/DriveFile.js';
-import type { MiEmoji } from '@/models/Emoji.js';
-import type { EmojiApplicationsRepository, MiEmojiApplication, MiUser } from '@/models/_.js';
+import type { DriveFilesRepository, EmojiApplicationsRepository, MiEmoji, MiEmojiApplication, MiUser, MiDriveFile } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import { ModerationLogService } from '@/core/ModerationLogService.js';
+import { RoleService } from '@/core/RoleService.js';
 import { DriveService } from './DriveService.js';
 import { CustomEmojiService } from './CustomEmojiService.js';
 
@@ -21,20 +20,25 @@ export class CustomEmojiApplicationService implements OnApplicationShutdown {
 		@Inject(DI.emojiApplicationsRepoisitory)
 		private emojiApplicationsRepository: EmojiApplicationsRepository,
 
+		@Inject(DI.driveFilesRepository)
+		private driveFilesRepository: DriveFilesRepository,
+
 		private idService: IdService,
 		private moderationLogService: ModerationLogService,
 
 		private customEmojiService: CustomEmojiService,
 		private driveService: DriveService,
+		private roleService: RoleService,
 	) {
 	}
 	onApplicationShutdown(signal?: string) {
 		throw new Error('Method not implemented.');
 	}
 
-	private async copyFileToSystem(file: MiDriveFile): Promise<MiDriveFile> {
+	private async copyFileToSystem(fileId: MiDriveFile['id']): Promise<MiDriveFile> {
+		const originalFile = await this.driveFilesRepository.findOneByOrFail({ id: fileId });
 		const copiedFile = await this.driveService.uploadFromUrl({
-			url: file.url,
+			url: originalFile.url,
 			user: null,
 			force: true,
 		});
@@ -120,6 +124,33 @@ export class CustomEmojiApplicationService implements OnApplicationShutdown {
 
 		return this.emojiApplicationsRepository.findOneByOrFail({ id });
 	}
+
+	@bindThis
+	public async updateComment(id: MiEmojiApplication['id'], data: {
+		comment: string;
+	}, moderator: MiUser): Promise<
+		MiEmojiApplication
+		| 'NO_SUCH_emoji_application'
+		| 'NO_PERMISSION'
+		| 'SAME_NAME_EMOJI_EXISTS'
+	> {
+		const emojiApplication = await this.emojiApplicationsRepository.findOneBy({ id });
+		if (emojiApplication == null) return 'NO_SUCH_emoji_application';
+
+		const userPolicy = await this.roleService.getUserPolicies(moderator.id);
+
+		if (userPolicy.canManageCustomEmojis !== true && !(await this.roleService.isModerator(moderator))) {
+			return 'NO_PERMISSION';
+		}
+
+		await this.emojiApplicationsRepository.update(id, {
+			updatedAt: new Date(),
+			comment: data.comment,
+		});
+
+		return this.emojiApplicationsRepository.findOneByOrFail({ id });
+	}
+
 	@bindThis
 	public async cancel(id: MiEmojiApplication['id'], me: MiUser): Promise<void | 'NO_SUCH_emoji_application' | 'NO_PERMISSION'> {
 		const emojiApplication = await this.emojiApplicationsRepository.findOneBy({ id });
@@ -138,11 +169,18 @@ export class CustomEmojiApplicationService implements OnApplicationShutdown {
 	}
 
 	@bindThis
-	public async reject(id: MiEmojiApplication['id'], moderator: MiUser): Promise<void | 'NO_SUCH_emoji_application'> {
+	public async reject(id: MiEmojiApplication['id'], moderator: MiUser): Promise<void | 'NO_SUCH_EMOJI_APPLICATION' | 'NO_PERMISSION'> {
 		const emojiApplication = await this.emojiApplicationsRepository.findOneBy({ id });
 
 		if (emojiApplication == null) {
-			return 'NO_SUCH_emoji_application';
+			return 'NO_SUCH_EMOJI_APPLICATION';
+		}
+
+		const userPolicy = await this.roleService.getUserPolicies(moderator.id);
+		const isModerator = await this.roleService.isModerator(moderator);
+
+		if (userPolicy.canManageCustomEmojis !== true && !isModerator) {
+			return 'NO_PERMISSION';
 		}
 
 		await this.emojiApplicationsRepository.update(emojiApplication.id, {
@@ -151,14 +189,21 @@ export class CustomEmojiApplicationService implements OnApplicationShutdown {
 	}
 
 	@bindThis
-	public async accept(id: MiEmojiApplication['id'], moderator: MiUser): Promise<MiEmoji | 'NO_SUCH_emoji_application'> {
+	public async accept(id: MiEmojiApplication['id'], moderator: MiUser): Promise<MiEmoji | 'NO_SUCH_EMOJI_APPLICATION' | 'NO_PERMISSION'> {
 		const emojiApplication = await this.emojiApplicationsRepository.findOneBy({ id });
 
 		if (emojiApplication == null) {
-			return 'NO_SUCH_emoji_application';
+			return 'NO_SUCH_EMOJI_APPLICATION';
 		}
 
-		const file = await this.copyFileToSystem(emojiApplication.file);
+		const userPolicy = await this.roleService.getUserPolicies(moderator.id);
+		const isModerator = await this.roleService.isModerator(moderator);
+
+		if (userPolicy.canManageCustomEmojis !== true && !isModerator) {
+			return 'NO_PERMISSION';
+		}
+
+		const file = await this.copyFileToSystem(emojiApplication.fileId);
 
 		const emoji = await this.customEmojiService.add({
 			name: emojiApplication.name,

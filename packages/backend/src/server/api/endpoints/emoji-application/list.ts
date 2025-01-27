@@ -54,7 +54,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.limit(ps.limit);
 
 			const emojiApplications = await query.getMany();
-			return await emojiApplicationEntityService.packMany(emojiApplications);
+			return await emojiApplicationEntityService.packMany(emojiApplications, me);
 		});
 	}
 }

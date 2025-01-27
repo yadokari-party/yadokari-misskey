@@ -28,6 +28,11 @@ export const packedEmojiApplicationSchema = {
 			optional: false, nullable: true,
 			format: 'id',
 		},
+		user: {
+			type: 'object',
+			optional: true, nullable: true,
+			ref: 'User',
+		},
 		aliases: {
 			type: 'array',
 			optional: false, nullable: false,

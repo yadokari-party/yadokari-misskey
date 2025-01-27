@@ -13,6 +13,7 @@ import { bindThis } from '@/decorators.js';
 import type { MiUser } from '@/models/_.js';
 import { RoleService } from '../RoleService.js';
 import { DriveFileEntityService } from './DriveFileEntityService.js';
+import { UserEntityService } from './UserEntityService.js';
 
 @Injectable()
 export class EmojiApplicationEntityService {
@@ -22,6 +23,7 @@ export class EmojiApplicationEntityService {
 
 		private driveFileEntityService: DriveFileEntityService,
 		private roleService: RoleService,
+		private userEntityService: UserEntityService,
 	) {
 	}
 
@@ -32,7 +34,7 @@ export class EmojiApplicationEntityService {
 	): Promise<Packed<'EmojiApplication'>> {
 		const emojiApplication = typeof src === 'object' ? src : await this.emojiApplicationsRepository.findOneByOrFail({ id: src });
 
-		const isGraterThanModrator = me != null && (await this.roleService.isModerator(me) || await this.roleService.isAdministrator(me));
+		const isGraterThanModrator = me != null && await this.roleService.isModerator(me);
 
 		return {
 			id: emojiApplication.id,
@@ -49,6 +51,7 @@ export class EmojiApplicationEntityService {
 			additionalInfo: emojiApplication.additionalInfo,
 			...(isGraterThanModrator ? {
 				comment: emojiApplication.comment,
+				...(emojiApplication.userId != null ? { user: await this.userEntityService.pack(emojiApplication.userId) } : {}),
 			} : {}),
 		};
 	}
@@ -56,8 +59,9 @@ export class EmojiApplicationEntityService {
 	@bindThis
 	public packMany(
 		emojiApplications: MiEmojiApplication[],
+		me? : MiUser,
 	) {
-		return Promise.all(emojiApplications.map(x => this.pack(x)));
+		return Promise.all(emojiApplications.map(x => this.pack(x, me)));
 	}
 }
 

@@ -5,19 +5,21 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { EmojiApplicationsRepository } from '@/models/_.js';
-import { DI } from '@/di-symbols.js';
-import { CustomEmojiApplicationService } from '@/core/CustomEmojiApplicationService.js';
 import { ApiError } from '@/server/api/error.js';
 import { EmojiApplicationEntityService } from '@/core/entities/EmojiApplicationEntityService.js';
-
-import { LoggerService } from '@/core/LoggerService.js';
+import { DI } from '@/di-symbols.js';
+import { CustomEmojiApplicationService } from '@/core/CustomEmojiApplicationService.js';
+import type { DriveFilesRepository } from '@/models/_.js';
+import type { EmojiApplicationsRepository } from '@/models/_.js';
+import { RoleService } from '@/core/RoleService.js';
 
 export const meta = {
-	tags: ['admin', 'emoji-requests', 'reject'],
+	tags: ['emoji-requests'],
 
 	requireCredential: true,
-	requireRolePolicy: 'canManageCustomEmojis',
+
+	prohibitMoved: true,
+
 	kind: 'write:admin:emoji',
 
 	res: {
@@ -29,7 +31,7 @@ export const meta = {
 	errors: {
 		noSuchEmojiApplication: {
 			message: 'No such emoji request.',
-			code: 'NO_SUCH_EMOJI_APPLICATION',
+			code: 'NO_SUCH_emoji_application',
 			id: 'b8f9b7b1-5a1b-4f3d-8f0e-6f2e1e5b0f9e',
 		},
 		noPermission: {
@@ -44,39 +46,42 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		emojiApplicationId: { type: 'string', format: 'misskey:id' },
+		comment: { type: 'string' },
 	},
-	required: ['emojiApplicationId'],
+	required: ['emojiApplicationId', 'comment'],
 } as const;
 
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		@Inject(DI.emojiApplicationsRepoisitory)
-			emojiApplicationsRepository: EmojiApplicationsRepository,
+		private emojiApplicationEntityService: EmojiApplicationEntityService,
 
-			customEmojiApplicationService: CustomEmojiApplicationService,
-			emojiApplicationEntityService: EmojiApplicationEntityService,
-			loggerService: LoggerService,
+		private customEmojiApplicationService: CustomEmojiApplicationService,
+
+		@Inject(DI.driveFilesRepository)
+		private driveFilesRepository: DriveFilesRepository,
+
+		@Inject(DI.emojiApplicationsRepoisitory)
+		private emojiApplicationsRepository: EmojiApplicationsRepository,
+
+		private roleService: RoleService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const logger = loggerService.getLogger('rejectEmojiApplication');
-
-			logger.debug('Rejecting emoji application');
-			logger.debug('Emoji application ID: ' + ps.emojiApplicationId);
-			const emojiApplication = await emojiApplicationsRepository.findOneBy({ id: ps.emojiApplicationId });
-			logger.debug('Emoji application: ' + JSON.stringify(emojiApplication));
+			const emojiApplication = await this.emojiApplicationsRepository.findOneBy({ id: ps.emojiApplicationId });
 
 			if (emojiApplication == null) {
 				throw new ApiError(meta.errors.noSuchEmojiApplication);
 			}
 
-			const result = await customEmojiApplicationService.reject(emojiApplication.id, me);
-
-			if (typeof result !== 'string') {
-				return emojiApplicationEntityService.pack(emojiApplication);
-			} else {
-				throw new ApiError(meta.errors.noSuchEmojiApplication);
+			if (!(await this.roleService.isModerator(me))) {
+				throw new ApiError(meta.errors.noPermission);
 			}
+
+			const updated = await this.customEmojiApplicationService.updateComment(ps.emojiApplicationId, {
+				comment: ps.comment,
+			}, me);
+
+			return this.emojiApplicationEntityService.pack(updated);
 		});
 	}
 }

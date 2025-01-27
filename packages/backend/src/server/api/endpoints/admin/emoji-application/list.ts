@@ -53,7 +53,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			const query = await queryService.makePaginationQuery(emojiApplicationsRepository.createQueryBuilder('emojiApplication'), ps.sinceId, ps.untilId);
 			const emojiApplications = await query.limit(ps.limit).getMany();
 
-			return await emojiApplicationEntityService.packMany(emojiApplications);
+			return await emojiApplicationEntityService.packMany(emojiApplications, me);
 		});
 	}
 }

@@ -5158,6 +5158,7 @@ export type components = {
       parentId: string | null;
       /** Format: id */
       userId: string | null;
+      user?: components['schemas']['User'] | null;
       aliases: string[];
       name: string;
       category: string | null;

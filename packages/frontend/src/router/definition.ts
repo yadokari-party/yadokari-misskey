@@ -392,6 +392,10 @@ const routes: RouteDef[] = [{
 		name: 'emojis',
 		component: page(() => import('@/pages/custom-emojis-manager.vue')),
 	}, {
+		path: '/emoji-applications',
+		name: 'emojiApplications',
+		component: page(() => import('@/pages/admin/emoji-applications/list.vue')),
+	}, {
 		path: '/avatar-decorations',
 		name: 'avatarDecorations',
 		component: page(() => import('@/pages/avatar-decorations.vue')),
