@@ -276,6 +276,7 @@ import * as ep___emoji from './endpoints/emoji.js';
 import * as ep___emojiApplication_create from './endpoints/emoji-application/create.js';
 import * as ep___emojiApplication_update from './endpoints/emoji-application/update.js';
 import * as ep___emojiApplication_list from './endpoints/emoji-application/list.js';
+import * as ep___emojiApplication_show from './endpoints/emoji-application/show.js';
 import * as ep___miauth_genToken from './endpoints/miauth/gen-token.js';
 import * as ep___mute_create from './endpoints/mute/create.js';
 import * as ep___mute_delete from './endpoints/mute/delete.js';
@@ -668,6 +669,7 @@ const $meta: Provider = { provide: 'ep:meta', useClass: ep___meta.default };
 const $emojis: Provider = { provide: 'ep:emojis', useClass: ep___emojis.default };
 const $emoji: Provider = { provide: 'ep:emoji', useClass: ep___emoji.default };
 const $emojiApplications_list = { provide: 'ep:emoji-applications', useClass: ep___emojiApplication_list.default };
+const $emojiApplications_show: Provider = { provide: 'ep:emoji-application/show', useClass: ep___emojiApplication_show.default };
 const $emojiApplications_create: Provider = { provide: 'ep:emoji-application/create', useClass: ep___emojiApplication_create.default };
 const $emojiApplications_update: Provider = { provide: 'ep:emoji-application/update', useClass: ep___emojiApplication_update.default };
 const $miauth_genToken: Provider = { provide: 'ep:miauth/gen-token', useClass: ep___miauth_genToken.default };
@@ -1066,6 +1068,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$emojis,
 		$emoji,
 		$emojiApplications_list,
+		$emojiApplications_show,
 		$emojiApplications_create,
 		$emojiApplications_update,
 		$miauth_genToken,
@@ -1457,6 +1460,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$emojis,
 		$emoji,
 		$emojiApplications_list,
+		$emojiApplications_show,
 		$emojiApplications_create,
 		$emojiApplications_update,
 		$miauth_genToken,

@@ -1130,6 +1130,12 @@ type EmojiApplicationCreateRequest = operations['emoji-application___create']['r
 type EmojiApplicationCreateResponse = operations['emoji-application___create']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type EmojiApplicationShowRequest = operations['emoji-application___show']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationShowResponse = operations['emoji-application___show']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type EmojiApplicationsResponse = operations['emoji-applications']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
@@ -1661,6 +1667,8 @@ declare namespace entities {
         EmojiRequest,
         EmojiResponse,
         EmojiApplicationsResponse,
+        EmojiApplicationShowRequest,
+        EmojiApplicationShowResponse,
         EmojiApplicationCreateRequest,
         EmojiApplicationCreateResponse,
         EmojiApplicationUpdateRequest,

@@ -282,6 +282,7 @@ import * as ep___emoji from './endpoints/emoji.js';
 import * as ep___emojiApplication_create from './endpoints/emoji-application/create.js';
 import * as ep___emojiApplication_update from './endpoints/emoji-application/update.js';
 import * as ep___emojiApplication_list from './endpoints/emoji-application/list.js';
+import * as ep___emojiApplication_show from './endpoints/emoji-application/show.js';
 import * as ep___miauth_genToken from './endpoints/miauth/gen-token.js';
 import * as ep___mute_create from './endpoints/mute/create.js';
 import * as ep___mute_delete from './endpoints/mute/delete.js';
@@ -672,6 +673,7 @@ const eps = [
 	['emojis', ep___emojis],
 	['emoji', ep___emoji],
 	['emoji-applications', ep___emojiApplication_list],
+	['emoji-application/show', ep___emojiApplication_show],
 	['emoji-application/create', ep___emojiApplication_create],
 	['emoji-application/update', ep___emojiApplication_update],
 	['miauth/gen-token', ep___miauth_genToken],

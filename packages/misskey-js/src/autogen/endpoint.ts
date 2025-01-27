@@ -400,6 +400,8 @@ import type {
 	EmojiRequest,
 	EmojiResponse,
 	EmojiApplicationsResponse,
+	EmojiApplicationShowRequest,
+	EmojiApplicationShowResponse,
 	EmojiApplicationCreateRequest,
 	EmojiApplicationCreateResponse,
 	EmojiApplicationUpdateRequest,
@@ -861,6 +863,7 @@ export type Endpoints = {
 	'emojis': { req: EmptyRequest; res: EmojisResponse };
 	'emoji': { req: EmojiRequest; res: EmojiResponse };
 	'emoji-applications': { req: EmptyRequest; res: EmojiApplicationsResponse };
+	'emoji-application/show': { req: EmojiApplicationShowRequest; res: EmojiApplicationShowResponse };
 	'emoji-application/create': { req: EmojiApplicationCreateRequest; res: EmojiApplicationCreateResponse };
 	'emoji-application/update': { req: EmojiApplicationUpdateRequest; res: EmojiApplicationUpdateResponse };
 	'miauth/gen-token': { req: MiauthGenTokenRequest; res: MiauthGenTokenResponse };

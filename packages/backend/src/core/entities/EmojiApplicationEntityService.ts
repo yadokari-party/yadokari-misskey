@@ -45,7 +45,7 @@ export class EmojiApplicationEntityService {
 			license: emojiApplication.license,
 			isSensitive: emojiApplication.isSensitive,
 			localOnly: emojiApplication.localOnly,
-			file: await this.driveFileEntityService.pack(emojiApplication.file),
+			file: await this.driveFileEntityService.pack(emojiApplication.fileId),
 			additionalInfo: emojiApplication.additionalInfo,
 			...(isGraterThanModrator ? {
 				comment: emojiApplication.comment,

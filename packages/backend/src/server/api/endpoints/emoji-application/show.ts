@@ -8,7 +8,7 @@ import { Endpoint } from '@/server/api/endpoint-base.js';
 import type { EmojiApplicationsRepository } from '@/models/_.js';
 import { EmojiApplicationEntityService } from '@/core/entities/EmojiApplicationEntityService.js';
 import { DI } from '@/di-symbols.js';
-import { QueryService } from '@/core/QueryService.js';
+import { ApiError } from '@/server/api/error.js';
 
 export const meta = {
 	tags: ['emoji-requests', 'account'],
@@ -18,24 +18,27 @@ export const meta = {
 	kind: 'read:account',
 
 	res: {
-		type: 'array',
+		type: 'object',
 		optional: false, nullable: false,
-		items: {
-			type: 'object',
-			optional: false, nullable: false,
-			ref: 'EmojiApplication',
+		ref: 'EmojiApplication',
+	},
+
+	errors: {
+		emojiApplicationNotFound: {
+			message: 'emoji application not found',
+			code: 'emoji_application_not_found',
+			id: 'a5c3a4b2-4d0d-4d5c-9b2b-9d6b7d6b9d6b',
 		},
 	},
+
 } as const;
 
 export const paramDef = {
 	type: 'object',
 	properties: {
-		sinceId: { type: 'string', format: 'misskey:id' },
-		untilId: { type: 'string', format: 'misskey:id' },
-		limit: { type: 'number', minimum: 0, maximum: 100 },
+		id: { type: 'string', format: 'misskey:id' },
 	},
-	required: [],
+	required: ['id'],
 } as const;
 
 @Injectable()
@@ -45,16 +48,18 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			emojiApplicationsRepository: EmojiApplicationsRepository,
 
 			emojiApplicationEntityService: EmojiApplicationEntityService,
-
-			queryService: QueryService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const query = queryService.makePaginationQuery(emojiApplicationsRepository.createQueryBuilder('emojiApplication'), ps.sinceId, ps.untilId)
-				.andWhere('emojiApplication.userId = :userId', { userId: me.id })
-				.limit(ps.limit);
+			const emojiApplication = await emojiApplicationsRepository.findOneBy({
+				id: ps.id,
+				userId: me.id,
+			});
 
-			const emojiApplications = await query.getMany();
-			return await emojiApplicationEntityService.packMany(emojiApplications);
+			if (emojiApplication === null) {
+				throw new ApiError(meta.errors.emojiApplicationNotFound);
+			}
+
+			return await emojiApplicationEntityService.pack(emojiApplication);
 		});
 	}
 }
