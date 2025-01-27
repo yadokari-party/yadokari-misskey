@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkFolder :opened="true">
+<MkFolder>
 	<template #icon>
 		<i v-if="emojiApplication.status === 'accepted'" class="ti ti-check" style="color: var(--MI_THEME-success)"></i>
 		<i v-else-if="emojiApplication.status === 'rejected'" class="ti ti-x" style="color: var(--MI_THEME-error)"></i>
@@ -16,7 +16,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template v-if="emojiApplication.user != null" #suffix>by <MkAcct :user="emojiApplication.user"/></template>
 
 	<div class="_gaps_s">
-		<MkFolder :opened="true">
+		<div>:{{ emojiApplication.name }}:</div>
+		<MkFolder :defaultOpen="true">
 			<template #icon><i class="ti ti-info-circle"></i></template>
 			<template #label>{{ i18n.ts.info }}</template>
 			<div class="_gaps_s">
@@ -25,16 +26,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<img v-if="emojiApplication.file != null" :src="emojiApplication.file.url" :class="$style.img" async defer/>
 				</MkFolder>
-				<MkFolder :defaultOpen="true">
+				<MkFolder>
 					<template #label>{{ i18n.ts.category }}</template>
+					<template #caption>{{ emojiApplication.category }}</template>
 					<div>{{ emojiApplication.category }}</div>
 				</MkFolder>
-				<MkFolder :defaultOpen="true">
+				<MkFolder>
 					<template #label>{{ i18n.ts.tags }}</template>
+					<template #caption>{{ emojiApplication.aliases.join(', ') }}</template>
 					<div>{{ emojiApplication.aliases.join(', ') }}</div>
 				</MkFolder>
-				<MkFolder :defaultOpen="true">
+				<MkFolder>
 					<template #label>{{ i18n.ts.license }}</template>
+					<template #caption>{{ emojiApplication.license }}</template>
 					<div>{{ emojiApplication.license }}</div>
 				</MkFolder>
 				<div>
@@ -52,6 +56,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkFolder>
 			<template #icon><i class="ti ti-message-2"></i></template>
 			<template #label>{{ i18n.ts._emojiApplication.additionalInfo }}</template>
+			<template v-if="emojiApplication.additionalInfo == null || emojiApplication.additionalInfo === ''" #caption>
+				{{ i18n.ts.nothing }}
+			</template>
 			<div class="_gaps_s">
 				<Mfm
 					v-if="emojiApplication.additionalInfo != null && emojiApplication.additionalInfo !== ''"
