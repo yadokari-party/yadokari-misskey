@@ -399,6 +399,7 @@ import type {
 	EmojisResponse,
 	EmojiRequest,
 	EmojiResponse,
+	EmojiApplicationsRequest,
 	EmojiApplicationsResponse,
 	EmojiApplicationShowRequest,
 	EmojiApplicationShowResponse,
@@ -406,6 +407,8 @@ import type {
 	EmojiApplicationCreateResponse,
 	EmojiApplicationUpdateRequest,
 	EmojiApplicationUpdateResponse,
+	EmojiApplicationCancelRequest,
+	EmojiApplicationCancelResponse,
 	MiauthGenTokenRequest,
 	MiauthGenTokenResponse,
 	MuteCreateRequest,
@@ -862,10 +865,11 @@ export type Endpoints = {
 	'meta': { req: MetaRequest; res: MetaResponse };
 	'emojis': { req: EmptyRequest; res: EmojisResponse };
 	'emoji': { req: EmojiRequest; res: EmojiResponse };
-	'emoji-applications': { req: EmptyRequest; res: EmojiApplicationsResponse };
+	'emoji-applications': { req: EmojiApplicationsRequest; res: EmojiApplicationsResponse };
 	'emoji-application/show': { req: EmojiApplicationShowRequest; res: EmojiApplicationShowResponse };
 	'emoji-application/create': { req: EmojiApplicationCreateRequest; res: EmojiApplicationCreateResponse };
 	'emoji-application/update': { req: EmojiApplicationUpdateRequest; res: EmojiApplicationUpdateResponse };
+	'emoji-application/cancel': { req: EmojiApplicationCancelRequest; res: EmojiApplicationCancelResponse };
 	'miauth/gen-token': { req: MiauthGenTokenRequest; res: MiauthGenTokenResponse };
 	'mute/create': { req: MuteCreateRequest; res: EmptyResponse };
 	'mute/delete': { req: MuteDeleteRequest; res: EmptyResponse };

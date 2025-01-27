@@ -2623,6 +2623,15 @@ export type paths = {
      */
     post: operations['emoji-application___update'];
   };
+  '/emoji-application/cancel': {
+    /**
+     * emoji-application/cancel
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:account*
+     */
+    post: operations['emoji-application___cancel'];
+  };
   '/miauth/gen-token': {
     /**
      * miauth/gen-token
@@ -21172,6 +21181,17 @@ export type operations = {
    * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   'emoji-applications': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          sinceId?: string;
+          /** Format: misskey:id */
+          untilId?: string;
+          limit?: number;
+        };
+      };
+    };
     responses: {
       /** @description OK (with results) */
       200: {
@@ -21358,6 +21378,60 @@ export type operations = {
       200: {
         content: {
           'application/json': components['schemas']['EmojiApplication'];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * emoji-application/cancel
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:account*
+   */
+  'emoji-application___cancel': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          emojiApplicationId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': unknown;
         };
       };
       /** @description Client error */

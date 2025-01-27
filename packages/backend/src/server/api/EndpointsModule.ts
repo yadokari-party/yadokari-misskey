@@ -277,6 +277,7 @@ import * as ep___emojiApplication_create from './endpoints/emoji-application/cre
 import * as ep___emojiApplication_update from './endpoints/emoji-application/update.js';
 import * as ep___emojiApplication_list from './endpoints/emoji-application/list.js';
 import * as ep___emojiApplication_show from './endpoints/emoji-application/show.js';
+import * as ep___emojiApplication_cancel from './endpoints/emoji-application/cancel.js';
 import * as ep___miauth_genToken from './endpoints/miauth/gen-token.js';
 import * as ep___mute_create from './endpoints/mute/create.js';
 import * as ep___mute_delete from './endpoints/mute/delete.js';
@@ -672,6 +673,7 @@ const $emojiApplications_list = { provide: 'ep:emoji-applications', useClass: ep
 const $emojiApplications_show: Provider = { provide: 'ep:emoji-application/show', useClass: ep___emojiApplication_show.default };
 const $emojiApplications_create: Provider = { provide: 'ep:emoji-application/create', useClass: ep___emojiApplication_create.default };
 const $emojiApplications_update: Provider = { provide: 'ep:emoji-application/update', useClass: ep___emojiApplication_update.default };
+const $emojiApplications_cancel: Provider = { provide: 'ep:emoji-application/cancel', useClass: ep___emojiApplication_cancel.default };
 const $miauth_genToken: Provider = { provide: 'ep:miauth/gen-token', useClass: ep___miauth_genToken.default };
 const $mute_create: Provider = { provide: 'ep:mute/create', useClass: ep___mute_create.default };
 const $mute_delete: Provider = { provide: 'ep:mute/delete', useClass: ep___mute_delete.default };
@@ -1071,6 +1073,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$emojiApplications_show,
 		$emojiApplications_create,
 		$emojiApplications_update,
+		$emojiApplications_cancel,
 		$miauth_genToken,
 		$mute_create,
 		$mute_delete,
@@ -1463,6 +1466,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$emojiApplications_show,
 		$emojiApplications_create,
 		$emojiApplications_update,
+		$emojiApplications_cancel,
 		$miauth_genToken,
 		$mute_create,
 		$mute_delete,

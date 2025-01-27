@@ -1124,6 +1124,12 @@ type EmojiAdded = {
 type EmojiApplication = components['schemas']['EmojiApplication'];
 
 // @public (undocumented)
+type EmojiApplicationCancelRequest = operations['emoji-application___cancel']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationCancelResponse = operations['emoji-application___cancel']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type EmojiApplicationCreateRequest = operations['emoji-application___create']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1134,6 +1140,9 @@ type EmojiApplicationShowRequest = operations['emoji-application___show']['reque
 
 // @public (undocumented)
 type EmojiApplicationShowResponse = operations['emoji-application___show']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsRequest = operations['emoji-applications']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type EmojiApplicationsResponse = operations['emoji-applications']['responses']['200']['content']['application/json'];
@@ -1666,6 +1675,7 @@ declare namespace entities {
         EmojisResponse,
         EmojiRequest,
         EmojiResponse,
+        EmojiApplicationsRequest,
         EmojiApplicationsResponse,
         EmojiApplicationShowRequest,
         EmojiApplicationShowResponse,
@@ -1673,6 +1683,8 @@ declare namespace entities {
         EmojiApplicationCreateResponse,
         EmojiApplicationUpdateRequest,
         EmojiApplicationUpdateResponse,
+        EmojiApplicationCancelRequest,
+        EmojiApplicationCancelResponse,
         MiauthGenTokenRequest,
         MiauthGenTokenResponse,
         MuteCreateRequest,

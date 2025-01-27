@@ -6,10 +6,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { ApiError } from '@/server/api/error.js';
-import { EmojiApplicationEntityService } from '@/core/entities/EmojiApplicationEntityService.js';
 import { DI } from '@/di-symbols.js';
 import { CustomEmojiApplicationService } from '@/core/CustomEmojiApplicationService.js';
-import type { DriveFilesRepository } from '@/models/_.js';
 import type { EmojiApplicationsRepository } from '@/models/_.js';
 
 export const meta = {
@@ -22,9 +20,6 @@ export const meta = {
 	kind: 'write:account',
 
 	res: {
-		type: 'object',
-		optional: false, nullable: false,
-		ref: 'EmojiApplication',
 	},
 
 	errors: {
@@ -45,39 +40,20 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		emojiApplicationId: { type: 'string', format: 'misskey:id' },
-		name: { type: 'string', pattern: '^[a-zA-Z0-9_]+$' },
-		fileId: { type: 'string', format: 'misskey:id' },
-		category: {
-			type: 'string',
-			nullable: true,
-			description: 'Use `null` to reset the category.',
-		},
-		aliases: { type: 'array', nullable: true, items: {
-			type: 'string',
-		} },
-		license: { type: 'string', nullable: true },
-		isSensitive: { type: 'boolean' },
-		localOnly: { type: 'boolean' },
 	},
-	required: ['emojiApplicationId', 'name', 'fileId'],
+	required: ['emojiApplicationId'],
 } as const;
 
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		private emojiApplicationEntityService: EmojiApplicationEntityService,
 
 		private customEmojiApplicationService: CustomEmojiApplicationService,
-
-		@Inject(DI.driveFilesRepository)
-		private driveFilesRepository: DriveFilesRepository,
 
 		@Inject(DI.emojiApplicationsRepoisitory)
 		private emojiApplicationsRepository: EmojiApplicationsRepository,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const file = await this.driveFilesRepository.findOneByOrFail({ id: ps.fileId });
-
 			const emojiApplication = await this.emojiApplicationsRepository.findOneBy({ id: ps.emojiApplicationId });
 
 			if (emojiApplication == null) {
@@ -88,17 +64,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				throw new ApiError(meta.errors.noPermission);
 			}
 
-			const updated = await this.customEmojiApplicationService.update(ps.emojiApplicationId, {
-				driveFile: file,
-				name: ps.name,
-				category: ps.category ?? null,
-				aliases: ps.aliases ?? [],
-				license: ps.license ?? null,
-				isSensitive: ps.isSensitive ?? false,
-				localOnly: ps.localOnly ?? false,
-			}, me);
+			await this.customEmojiApplicationService.cancel(emojiApplication.id, me);
 
-			return this.emojiApplicationEntityService.pack(updated);
+			return {};
 		});
 	}
 }
