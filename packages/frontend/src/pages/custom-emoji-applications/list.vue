@@ -58,6 +58,7 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { misskeyApi } from '@/scripts/misskey-api';
 import MkSelect from '@/components/MkSelect.vue';
+import { $i } from '@/account.js';
 
 const emojiApplicationsPaginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
 const status : 'all' | Misskey.entities.EmojiApplication['status'] = ref('all');
@@ -96,12 +97,14 @@ const cancel = async (emojiApplication) => {
 	});
 };
 
-const headerActions = computed(() => [{
-	asFullButton: true,
-	icon: 'ti ti-plus',
-	text: i18n.ts.addEmoji,
-	handler: add,
-}]);
+const headerActions = computed(() => [
+	...($i.isModerator || $i.policies.canCreateCustomEmojiApplications ? [{
+		asFullButton: true,
+		icon: 'ti ti-plus',
+		text: i18n.ts.addEmoji,
+		handler: add,
+	}] : []),
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts._emojiApplication._list.title,

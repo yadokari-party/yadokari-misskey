@@ -7013,6 +7013,10 @@ export interface Locale extends ILocale {
              * リストのインポートを許可
              */
             "canImportUserLists": string;
+            /**
+             * カスタム絵文字の申請を許可
+             */
+            "canCreateCustomEmojiApplications": string;
         };
         "_condition": {
             /**

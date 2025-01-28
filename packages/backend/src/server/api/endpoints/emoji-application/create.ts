@@ -11,6 +11,7 @@ import { EmojiApplicationEntityService } from '@/core/entities/EmojiApplicationE
 import { DI } from '@/di-symbols.js';
 import { CustomEmojiApplicationService } from '@/core/CustomEmojiApplicationService.js';
 import type { DriveFilesRepository } from '@/models/_.js';
+import { RoleService } from '@/core/RoleService.js';
 
 export const meta = {
 	tags: ['emoji-requests'],
@@ -37,6 +38,11 @@ export const meta = {
 			message: 'You cannot send request any more.',
 			code: 'TOO_MANY_emoji_applicationS',
 			id: '920f7c2d-6208-4b76-8082-e632020f5883',
+		},
+		noPermission: {
+			message: 'No permission.',
+			code: 'NO_PERMISSION',
+			id: 'f2c7c8a1-4b7b-4c7f-8e0d-7f2e1e5b0f9e',
 		},
 	},
 } as const;
@@ -72,8 +78,15 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
+
+		private roleService: RoleService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const policies = await this.roleService.getUserPolicies(me.id);
+			if (!policies.canCreateCustomEmojiApplications && !(await this.roleService.isModerator(me))) {
+				throw new ApiError(meta.errors.noPermission);
+			}
+
 			const file = await this.driveFilesRepository.findOneByOrFail({ id: ps.fileId });
 
 			const emojiApplication = await this.customEmojiApplicationService.create({
