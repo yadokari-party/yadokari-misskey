@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.root" class="_gaps">
 			<MkPagination v-slot="{items}" ref="emojiApplications" :pagination="pagination">
 				<div class="_gaps">
-					<XEmojiApplication v-for="emojiApplication in items" :key="emojiApplication.id" :emojiApplication="emojiApplication" @accept.stop="onAccept" @reject.stop="onReject"/>
+					<XEmojiApplication v-for="emojiApplication in items" :key="emojiApplication.id" :emojiApplication="emojiApplication" @accept="reload" @reject="reload"/>
 				</div>
 			</MkPagination>
 		</div>
@@ -21,11 +21,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, shallowRef, ref } from 'vue';
 import XHeader from '../_header_.vue';
+import type * as Misskey from 'misskey-js';
 import MkPagination from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import XEmojiApplication from '@/components/emoji-application/MkEmojiApplication.vue';
-import type * as Misskey from 'misskey-js';
 
 const emojiApplications = shallowRef<InstanceType<typeof MkPagination>>();
 
@@ -36,17 +36,20 @@ const pagination = {
 	})),
 };
 
-const headerActions = computed(() => []);
+const reload = () => {
+	console.log('reload');
+	emojiApplications.value?.reload();
+};
+
+const headerActions = computed(() => [
+	{
+		icon: 'ti ti-reload',
+		text: i18n.ts.reload,
+		handler: reload,
+	},
+]);
 
 const headerTabs = computed(() => []);
-
-function onAccept(emojiApplication: Misskey.entities.EmojiApplication) {
-	emojiApplications.value?.reload();
-}
-
-function onReject(emojiApplication: Misskey.entities.EmojiApplication) {
-	emojiApplications.value?.reload();
-}
 
 definePageMetadata(() => ({
 	title: i18n.ts._emojiApplication.title,

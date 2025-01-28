@@ -135,6 +135,10 @@ async function accept () {
 		emojiApplicationId: emojiApplication.value.id,
 	}).then(() => {
 		emit('accept', { ...emojiApplication.value, status: 'accepted' });
+		os.success();
+	}).catch((err) => {
+		os.error(err);
+		console.error(err);
 	});
 }
 
@@ -144,11 +148,14 @@ async function reject () {
 		title: i18n.tsx._emojiApplication.confirmReject({ name: emojiApplication.value.name }),
 	});
 	if (confirm.canceled) return;
-
 	misskeyApi('admin/emoji-applications/reject', {
 		emojiApplicationId: emojiApplication.value.id,
 	}).then(() => {
 		emit('reject', { ...emojiApplication.value, status: 'rejected' });
+		os.success();
+	}).catch((err) => {
+		os.error(err);
+		console.error(err);
 	});
 }
 </script>
