@@ -10690,11 +10690,11 @@ export interface Locale extends ILocale {
     "_emojiApplication": {
         "_status": {
             /**
-             * 承認待ち
+             * 確認待ち
              */
             "pending": string;
             /**
-             * キャンセル済み
+             * キャンセル
              */
             "canceled": string;
             /**
@@ -10702,7 +10702,7 @@ export interface Locale extends ILocale {
              */
             "accepted": string;
             /**
-             * 拒否済み
+             * 否認
              */
             "rejected": string;
         };

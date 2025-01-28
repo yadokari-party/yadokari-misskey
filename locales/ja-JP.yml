@@ -2854,10 +2854,10 @@ _remoteLookupErrors:
 
 _emojiApplication:
   _status:
-    pending: "承認待ち"
-    canceled: "キャンセル済み"
+    pending: "確認待ち"
+    canceled: "キャンセル"
     accepted: "承認済み"
-    rejected: "拒否済み"
+    rejected: "否認"
   _list:
     title: "カスタム絵文字申請一覧"
   title: "カスタム絵文字申請"
