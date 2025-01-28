@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkSpacer>
 		<div v-if="props.emojiApplication == null || props.emojiApplication.status === 'pending'" :class="$style.footer">
 			<MkButton primary rounded style="margin: 0 auto;" @click="done">
-				<i class="ti ti-check"></i> {{ props.emojiApplicationId ?? props.emojiApplication ? i18n.ts.update : i18n.ts.create }}
+				<i class="ti ti-check"></i> {{ isEdit ? i18n.ts.update : i18n.ts.create }}
 			</MkButton>
 		</div>
 	</div>
@@ -92,6 +92,8 @@ const isSensitive = ref(props.emojiApplication ? props.emojiApplication.isSensit
 const localOnly = ref(props.emojiApplication ? props.emojiApplication.localOnly : false);
 const additionalInfo = ref<string>(props.emojiApplication ? props.emojiApplication.additionalInfo ?? '' : '');
 const file = ref<Misskey.entities.DriveFile>();
+
+const isEdit = props.emojiApplicationId != null || props.emojiApplication != null;
 
 const nonNullCategories = customEmojiCategories.value.filter(x => x != null);
 
