@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<i v-else-if="emojiApplication.status === 'canceled'" class="ti ti-slash" style="color: var(--MI_THEME-error)"></i>
 		<i v-else class="ti ti-exclamation-circle" style="color: var(--MI_THEME-warn)"></i>
 	</template>
-	<template #label>{{ emojiApplication.name }}</template>
+	<template #label>:{{ emojiApplication.name }}:</template>
 	<template #caption>{{ emojiApplication.category }}</template>
 	<template v-if="emojiApplication.user != null" #suffix>by <MkAcct :user="emojiApplication.user"/></template>
 
@@ -28,18 +28,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkFolder>
 				<MkFolder>
 					<template #label>{{ i18n.ts.category }}</template>
-					<template #caption>{{ emojiApplication.category }}</template>
-					<div>{{ emojiApplication.category }}</div>
+					<template v-if="nullOrEmpty(emojiApplication.category)" #caption>
+						{{ i18n.ts.nothing }}
+					</template>
+					<template v-else #caption>{{ emojiApplication.category }}</template>
+					<div v-if="nullOrEmpty(emojiApplication.category)">{{ nothing }}</div>
+					<div v-else>{{ emojiApplication.category }}</div>
 				</MkFolder>
 				<MkFolder>
 					<template #label>{{ i18n.ts.tags }}</template>
-					<template #caption>{{ emojiApplication.aliases.join(', ') }}</template>
-					<div>{{ emojiApplication.aliases.join(', ') }}</div>
+					<template v-if="nullOrEmpty(emojiApplication.aliases.join(''))" #caption>{{ i18n.ts.nothing }}</template>
+					<template v-else #caption>{{ emojiApplication.aliases.join(', ') }}</template>
+					<div v-if="nullOrEmpty(emojiApplication.aliases.join(''))">{{ i18n.ts.nothing }}</div>
+					<div v-else>{{ emojiApplication.aliases.join(', ') }}</div>
 				</MkFolder>
 				<MkFolder>
 					<template #label>{{ i18n.ts.license }}</template>
-					<template #caption>{{ emojiApplication.license }}</template>
-					<div>{{ emojiApplication.license }}</div>
+					<template v-if="nullOrEmpty(emojiApplication.license)" #caption>{{ i18n.ts.nothing }}</template>
+					<template v-else #caption>{{ emojiApplication.license }}</template>
+					<div v-if="nullOrEmpty(emojiApplication.license)">{{ i18n.ts.nothing }}</div>
+					<div v-else>{{ emojiApplication.license }}</div>
 				</MkFolder>
 				<div>
 					<span v-if="emojiApplication.isSensitive">✅</span>
@@ -56,7 +64,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkFolder>
 			<template #icon><i class="ti ti-message-2"></i></template>
 			<template #label>{{ i18n.ts._emojiApplication.additionalInfo }}</template>
-			<template v-if="emojiApplication.additionalInfo == null || emojiApplication.additionalInfo === ''" #caption>
+			<template v-if="nullOrEmpty(emojiApplication.additionalInfo)" #caption>
 				{{ i18n.ts.nothing }}
 			</template>
 			<div class="_gaps_s">
@@ -70,6 +78,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkFolder>
 			<template #icon><i class="ti ti-pencil"></i></template>
 			<template #label>{{ i18n.ts.moderationNote }}</template>
+			<template v-if="nullOrEmpty(comment)" #caption>
+				{{ i18n.ts.nothing }}
+			</template>
 			<div class="_gaps_s">
 				<MkTextarea v-model="comment" :rows="3"/>
 				<MkButton v-if="commentHasChanged" primary @click="submitComment"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
@@ -157,6 +168,10 @@ async function reject () {
 		os.error(err);
 		console.error(err);
 	});
+}
+
+function nullOrEmpty (str: string | null | undefined) {
+	return str == null || str === '';
 }
 </script>
 <style lang="scss" module>
