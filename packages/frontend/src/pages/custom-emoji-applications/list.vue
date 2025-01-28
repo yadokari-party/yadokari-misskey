@@ -8,7 +8,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkStickyContainer>
 		<template #header><MkPageHeader :actions="headerActions"/></template>
 		<MkSpacer :contentMax="900">
-			<div :class="$style.container">
+			<div :class="$style.container" class="_gaps_s">
+				<div :class="$style.inputs">
+					<MkSelect v-model="status" style="margin: 0; flex: 1;">
+						<template #label>{{ i18n.ts.state }}</template>
+						<option value="all">{{ i18n.ts.all }}</option>
+						<option value="pending">{{ i18n.ts._emojiApplication._status.pending }}</option>
+						<option value="canceled">{{ i18n.ts._emojiApplication._status.canceled }}</option>
+						<option value="accepted">{{ i18n.ts._emojiApplication._status.accepted }}</option>
+						<option value="rejected">{{ i18n.ts._emojiApplication._status.rejected }}</option>
+					</MkSelect>
+				</div>
 				<MkPagination ref="emojiApplicationsPaginationComponent" :pagination="pagination">
 					<template #empty><span>{{ i18n.ts.noCustomEmojis }}</span></template>
 					<template #default="{items}">
@@ -41,13 +51,17 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { misskeyApi } from '@/scripts/misskey-api';
+import MkSelect from '@/components/MkSelect.vue';
 
 const emojiApplicationsPaginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const status : 'all' | Misskey.entities.EmojiApplication['status'] = ref('all');
 
 const pagination = {
 	endpoint: 'emoji-applications' as const,
 	limit: 30,
-	params: {},
+	params: computed(() => ({
+		status: status.value,
+	})),
 };
 
 const add = async () => {
@@ -90,6 +104,13 @@ definePageMetadata(() => ({
 </script>
 
 <style lang="scss" module>
+.inputs {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .empty {
 	margin: var(--MI-margin);
 }

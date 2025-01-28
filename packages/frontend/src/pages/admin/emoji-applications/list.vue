@@ -8,6 +8,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="900">
 		<div :class="$style.root" class="_gaps">
+			<div :class="$style.inputs" class="_gaps">
+				<MkSelect v-model="status" style="margin: 0; flex: 1;">
+					<template #label>{{ i18n.ts.state }}</template>
+					<option value="all">{{ i18n.ts.all }}</option>
+					<option value="pending">{{ i18n.ts._emojiApplication._status.pending }}</option>
+					<option value="canceled">{{ i18n.ts._emojiApplication._status.canceled }}</option>
+					<option value="accepted">{{ i18n.ts._emojiApplication._status.accepted }}</option>
+					<option value="rejected">{{ i18n.ts._emojiApplication._status.rejected }}</option>
+				</MkSelect>
+			</div>
 			<MkPagination v-slot="{items}" ref="emojiApplications" :pagination="pagination">
 				<div class="_gaps">
 					<XEmojiApplication v-for="emojiApplication in items" :key="emojiApplication.id" :emojiApplication="emojiApplication" @accept="reload" @reject="reload"/>
@@ -26,13 +36,17 @@ import MkPagination from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import XEmojiApplication from '@/components/emoji-application/MkEmojiApplication.vue';
+import MkSelect from '@/components/MkSelect.vue';
 
 const emojiApplications = shallowRef<InstanceType<typeof MkPagination>>();
+
+const status : 'all' | Misskey.entities.EmojiApplication['status'] = ref('all');
 
 const pagination = {
 	endpoint: 'admin/emoji-applications' as const,
 	limit: 10,
 	params: computed(() => ({
+		status: status.value,
 	})),
 };
 
