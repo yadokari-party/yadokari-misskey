@@ -23,7 +23,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #empty><span>{{ i18n.ts.noCustomEmojis }}</span></template>
 					<template #default="{items}">
 						<div :class="$style.emojiApplications">
-							<button v-for="emojiApplication in items" :key="`emoji-application-${emojiApplication.id}`" :class="$style.emojiApplication" class="_panel _button" @click="edit(emojiApplication)">
+							<button
+								v-for="emojiApplication in items"
+								:key="`emoji-application-${emojiApplication.id}`"
+								:class="[$style.emojiApplication]"
+								class="_panel _button"
+								@click="edit(emojiApplication)"
+							>
 								<div :class="$style.emojiAppplicationContent">
 									<img :src="emojiApplication.file.thumbnailUrl" :class="$style.img" :alt="emojiApplication.name"/>
 									<div :class="$style.body">

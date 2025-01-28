@@ -48,8 +48,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkTextarea>
 			</div>
 		</MkSpacer>
-		<div :class="$style.footer">
-			<MkButton primary rounded style="margin: 0 auto;" @click="done"><i class="ti ti-check"></i> {{ props.emojiApplicationId ?? props.emojiApplication ? i18n.ts.update : i18n.ts.create }}</MkButton>
+		<div v-if="props.emojiApplication == null || props.emojiApplication.status === 'pending'" :class="$style.footer">
+			<MkButton primary rounded style="margin: 0 auto;" @click="done">
+				<i class="ti ti-check"></i> {{ props.emojiApplicationId ?? props.emojiApplication ? i18n.ts.update : i18n.ts.create }}
+			</MkButton>
 		</div>
 	</div>
 </MkSpacer>
