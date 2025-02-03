@@ -1,7 +1,8 @@
 ## 2024.11.1
 
 ### General
--
+- Fix: Docker のビルドに失敗する問題を修正  
+  (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/883)
 
 ### Client
 - Enhance: PC画面でチャンネルが複数列で表示されるように  
