@@ -16,6 +16,11 @@ on:
       # for permissions
       - packages/misskey-js/**
       - .github/workflows/test-backend.yml
+      - .github/misskey/test.yml
+
+env:
+  COREPACK_DEFAULT_TO_LATEST: 0
+
 jobs:
   unit:
     runs-on: ubuntu-latest
