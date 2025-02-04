@@ -191,6 +191,7 @@ function cancel() {
 function onKeydown(evt: KeyboardEvent) {
 	if (evt.key === 'Escape') cancel();
 }
+
 function onInputKeydown(evt: KeyboardEvent) {
 	if (evt.key === 'Enter' && okButtonDisabledReason.value === null) {
 		evt.preventDefault();
