@@ -91,7 +91,7 @@ const license = ref<string>(props.emojiApplication?.license ? props.emojiApplica
 const isSensitive = ref(props.emojiApplication ? props.emojiApplication.isSensitive : false);
 const localOnly = ref(props.emojiApplication ? props.emojiApplication.localOnly : false);
 const additionalInfo = ref<string>(props.emojiApplication ? props.emojiApplication.additionalInfo ?? '' : '');
-const file = ref<Misskey.entities.DriveFile>();
+const file = ref<Misskey.entities.DriveFile | null>(props.emojiApplication ? props.emojiApplication.file : null);
 
 const isEdit = props.emojiApplicationId != null || props.emojiApplication != null;
 
@@ -108,7 +108,7 @@ async function changeImage(ev: Event) {
 }
 
 async function done() {
-	if (!file.value) {
+	if (file.value == null) {
 		os.toast('画像を選択してください');
 		return;
 	}
