@@ -78,7 +78,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: 'done', v: { updated?: Misskey.entities.EmojiApplicationUpdateRequest; created?: Misskey.entities.EmojiApplicationUpdateRequest }): void,
+	(ev: 'done', v: { updated?: Misskey.entities.EmojiApplicationsUpdateRequest; created?: Misskey.entities.EmojiApplicationsUpdateRequest }): void,
 	(ev: 'closed'): void
 }>();
 
@@ -113,12 +113,12 @@ async function done() {
 		return;
 	}
 
-	type Params = Omit<Required<Misskey.Endpoints['emoji-application/create']['req']>, 'category'> &
+	type Params = Omit<Required<Misskey.Endpoints['emoji-applications/create']['req']>, 'category'> &
 	{
 		category: string | null;
 	}
 	& Partial<{
-		emojiApplicationId: Misskey.Endpoints['emoji-application/update']['req']['emojiApplicationId']
+		emojiApplicationId: Misskey.Endpoints['emoji-applications/update']['req']['emojiApplicationId']
 	}>;
 
 	const params : Params = {
@@ -134,7 +134,7 @@ async function done() {
 	};
 
 	if (props.emojiApplicationId ?? props.emojiApplication != null) {
-		await os.apiWithDialog('emoji-application/update', {
+		await os.apiWithDialog('emoji-applications/update', {
 			emojiApplicationId: props.emojiApplicationId ?? props.emojiApplication!.id,
 			...params,
 		});
@@ -149,7 +149,7 @@ async function done() {
 
 		windowEl.value?.close();
 	} else {
-		const created = await os.apiWithDialog('emoji-application/create', params);
+		const created = await os.apiWithDialog('emoji-applications/create', params);
 
 		emit('done', {
 			created: {
@@ -166,7 +166,7 @@ async function done() {
 onMounted(() => {
 	if (props.emojiApplicationId != null && props.emojiApplication == null) {
 		(async () => {
-			const emojiApplication = await misskeyApi('emoji-application/show', {
+			const emojiApplication = await misskeyApi('emoji-applications/show', {
 				id: props.emojiApplicationId,
 			}) as unknown as Misskey.entities.EmojiApplication;
 			console.log(emojiApplication);

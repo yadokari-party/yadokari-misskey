@@ -35,13 +35,13 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: 'done', v: { updated?: Misskey.entities.EmojiApplicationUpdateRequest; created?: Misskey.entities.EmojiApplicationUpdateRequest }): void,
+	(ev: 'done', v: { updated?: Misskey.entities.EmojiApplicationsUpdateRequest; created?: Misskey.entities.EmojiApplicationsUpdateRequest }): void,
 	(ev: 'closed'): void
 }>();
 
 const windowEl = ref<InstanceType<typeof MkWindow> | null>(null);
 
-async function done(payload: { updated?: Misskey.entities.EmojiApplicationUpdateRequest; created?: Misskey.entities.EmojiApplicationUpdateRequest }) {
+async function done(payload: { updated?: Misskey.entities.EmojiApplicationsUpdateRequest; created?: Misskey.entities.EmojiApplicationsUpdateRequest }) {
 	if (payload.updated) {
 		emit('done', { updated: payload.updated });
 	} else if (payload.created) {
