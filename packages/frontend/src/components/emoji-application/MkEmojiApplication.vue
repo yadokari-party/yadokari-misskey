@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						{{ i18n.ts.nothing }}
 					</template>
 					<template v-else #caption>{{ emojiApplication.category }}</template>
-					<div v-if="nullOrEmpty(emojiApplication.category)">{{ nothing }}</div>
+					<div v-if="nullOrEmpty(emojiApplication.category)">{{ i18n.ts.nothing }}</div>
 					<div v-else>{{ emojiApplication.category }}</div>
 				</MkFolder>
 				<MkFolder>
@@ -104,7 +104,6 @@ import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/scripts/misskey-api';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkButton from '@/components/MkButton.vue';
-import MkMention from '@/components/MkMention.vue';
 import * as os from '@/os.js';
 
 const props = defineProps<{
@@ -147,9 +146,6 @@ async function accept () {
 	}).then(() => {
 		emit('accept', { ...emojiApplication.value, status: 'accepted' });
 		os.success();
-	}).catch((err) => {
-		os.error(err);
-		console.error(err);
 	});
 }
 
@@ -164,9 +160,6 @@ async function reject () {
 	}).then(() => {
 		emit('reject', { ...emojiApplication.value, status: 'rejected' });
 		os.success();
-	}).catch((err) => {
-		os.error(err);
-		console.error(err);
 	});
 }
 
