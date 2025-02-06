@@ -1137,6 +1137,36 @@ type EmojiAdded = {
 type EmojiApplication = components['schemas']['EmojiApplication'];
 
 // @public (undocumented)
+type EmojiApplicationsCancelRequest = operations['emoji-applications___cancel']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsCancelResponse = operations['emoji-applications___cancel']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsCreateRequest = operations['emoji-applications___create']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsCreateResponse = operations['emoji-applications___create']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsRequest = operations['emoji-applications']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsResponse = operations['emoji-applications']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsShowRequest = operations['emoji-applications___show']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsShowResponse = operations['emoji-applications___show']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsUpdateRequest = operations['emoji-applications___update']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsUpdateResponse = operations['emoji-applications___update']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type EmojiDeleted = {
     emojis: EmojiDetailed[];
 };
@@ -1526,6 +1556,16 @@ declare namespace entities {
         EmailAddressAvailableResponse,
         EmojiRequest,
         EmojiResponse,
+        EmojiApplicationsRequest,
+        EmojiApplicationsResponse,
+        EmojiApplicationsCancelRequest,
+        EmojiApplicationsCancelResponse,
+        EmojiApplicationsCreateRequest,
+        EmojiApplicationsCreateResponse,
+        EmojiApplicationsShowRequest,
+        EmojiApplicationsShowResponse,
+        EmojiApplicationsUpdateRequest,
+        EmojiApplicationsUpdateResponse,
         EmojisResponse,
         EndpointRequest,
         EndpointResponse,

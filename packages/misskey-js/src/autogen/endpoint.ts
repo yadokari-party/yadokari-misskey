@@ -264,6 +264,16 @@ import type {
 	EmailAddressAvailableResponse,
 	EmojiRequest,
 	EmojiResponse,
+	EmojiApplicationsRequest,
+	EmojiApplicationsResponse,
+	EmojiApplicationsCancelRequest,
+	EmojiApplicationsCancelResponse,
+	EmojiApplicationsCreateRequest,
+	EmojiApplicationsCreateResponse,
+	EmojiApplicationsShowRequest,
+	EmojiApplicationsShowResponse,
+	EmojiApplicationsUpdateRequest,
+	EmojiApplicationsUpdateResponse,
 	EmojisResponse,
 	EndpointRequest,
 	EndpointResponse,
@@ -766,6 +776,11 @@ export type Endpoints = {
 	'drive/stream': { req: DriveStreamRequest; res: DriveStreamResponse };
 	'email-address/available': { req: EmailAddressAvailableRequest; res: EmailAddressAvailableResponse };
 	'emoji': { req: EmojiRequest; res: EmojiResponse };
+	'emoji-applications': { req: EmojiApplicationsRequest; res: EmojiApplicationsResponse };
+	'emoji-applications/cancel': { req: EmojiApplicationsCancelRequest; res: EmojiApplicationsCancelResponse };
+	'emoji-applications/create': { req: EmojiApplicationsCreateRequest; res: EmojiApplicationsCreateResponse };
+	'emoji-applications/show': { req: EmojiApplicationsShowRequest; res: EmojiApplicationsShowResponse };
+	'emoji-applications/update': { req: EmojiApplicationsUpdateRequest; res: EmojiApplicationsUpdateResponse };
 	'emojis': { req: EmptyRequest; res: EmojisResponse };
 	'endpoint': { req: EndpointRequest; res: EndpointResponse };
 	'endpoints': { req: EmptyRequest; res: EndpointsResponse };
