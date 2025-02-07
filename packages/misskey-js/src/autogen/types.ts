@@ -5012,6 +5012,7 @@ export type components = {
       canImportFollowing: boolean;
       canImportMuting: boolean;
       canImportUserLists: boolean;
+      canCreateCustomEmojiApplications: boolean;
     };
     ReversiGameLite: {
       /** Format: id */
