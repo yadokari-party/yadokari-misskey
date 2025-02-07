@@ -213,11 +213,14 @@ export class CustomEmojiApplicationService implements OnApplicationShutdown {
 			license: emojiApplication.license,
 			isSensitive: emojiApplication.isSensitive,
 			localOnly: emojiApplication.localOnly,
-			driveFile: file,
 			roleIdsThatCanBeUsedThisEmojiAsReaction: [],
+			originalUrl: file.url,
+			publicUrl: file.webpublicUrl ?? file.url,
+			fileType: file.webpublicType ?? file.type,
 		}, moderator);
 
 		await this.emojiApplicationsRepository.update(emojiApplication.id, {
+			fileId: file.id,
 			status: 'accepted',
 		});
 
