@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, shallowRef } from 'vue';
+import { computed, defineAsyncComponent, ref, shallowRef, type Ref } from 'vue';
 import type * as Misskey from 'misskey-js';
 import MkPagination from '@/components/MkPagination.vue';
 import * as os from '@/os.js';
@@ -61,7 +61,7 @@ import MkSelect from '@/components/MkSelect.vue';
 import { $i } from '@/account.js';
 
 const emojiApplicationsPaginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
-const status : 'all' | Misskey.entities.EmojiApplication['status'] = ref('all');
+const status : Ref<'all' | Misskey.entities.EmojiApplication['status']> = ref('all');
 
 const pagination = {
 	endpoint: 'emoji-applications' as const,
@@ -98,7 +98,7 @@ const cancel = async (emojiApplication) => {
 };
 
 const headerActions = computed(() => [
-	...($i.isModerator || $i.policies.canCreateCustomEmojiApplications ? [{
+	...($i != null && ($i.isModerator || $i.policies.canCreateCustomEmojiApplications) ? [{
 		asFullButton: true,
 		icon: 'ti ti-plus',
 		text: i18n.ts.addEmoji,
