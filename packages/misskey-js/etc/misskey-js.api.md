@@ -171,6 +171,30 @@ type AdminEmojiAddRequest = operations['admin___emoji___add']['requestBody']['co
 type AdminEmojiAddResponse = operations['admin___emoji___add']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type AdminEmojiApplicationsAcceptRequest = operations['admin___emoji-applications___accept']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiApplicationsAcceptResponse = operations['admin___emoji-applications___accept']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiApplicationsRejectRequest = operations['admin___emoji-applications___reject']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiApplicationsRejectResponse = operations['admin___emoji-applications___reject']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiApplicationsRequest = operations['admin___emoji-applications']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiApplicationsResponse = operations['admin___emoji-applications']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiApplicationsUpdateRequest = operations['admin___emoji-applications___update']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiApplicationsUpdateResponse = operations['admin___emoji-applications___update']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type AdminEmojiCopyRequest = operations['admin___emoji___copy']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1110,6 +1134,39 @@ type EmojiAdded = {
 };
 
 // @public (undocumented)
+type EmojiApplication = components['schemas']['EmojiApplication'];
+
+// @public (undocumented)
+type EmojiApplicationsCancelRequest = operations['emoji-applications___cancel']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsCancelResponse = operations['emoji-applications___cancel']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsCreateRequest = operations['emoji-applications___create']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsCreateResponse = operations['emoji-applications___create']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsRequest = operations['emoji-applications']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsResponse = operations['emoji-applications']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsShowRequest = operations['emoji-applications___show']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsShowResponse = operations['emoji-applications___show']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsUpdateRequest = operations['emoji-applications___update']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type EmojiApplicationsUpdateResponse = operations['emoji-applications___update']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type EmojiDeleted = {
     emojis: EmojiDetailed[];
 };
@@ -1278,6 +1335,14 @@ declare namespace entities {
         AdminDriveFilesResponse,
         AdminDriveShowFileRequest,
         AdminDriveShowFileResponse,
+        AdminEmojiApplicationsRequest,
+        AdminEmojiApplicationsResponse,
+        AdminEmojiApplicationsAcceptRequest,
+        AdminEmojiApplicationsAcceptResponse,
+        AdminEmojiApplicationsRejectRequest,
+        AdminEmojiApplicationsRejectResponse,
+        AdminEmojiApplicationsUpdateRequest,
+        AdminEmojiApplicationsUpdateResponse,
         AdminEmojiAddRequest,
         AdminEmojiAddResponse,
         AdminEmojiAddAliasesBulkRequest,
@@ -1491,6 +1556,16 @@ declare namespace entities {
         EmailAddressAvailableResponse,
         EmojiRequest,
         EmojiResponse,
+        EmojiApplicationsRequest,
+        EmojiApplicationsResponse,
+        EmojiApplicationsCancelRequest,
+        EmojiApplicationsCancelResponse,
+        EmojiApplicationsCreateRequest,
+        EmojiApplicationsCreateResponse,
+        EmojiApplicationsShowRequest,
+        EmojiApplicationsShowResponse,
+        EmojiApplicationsUpdateRequest,
+        EmojiApplicationsUpdateResponse,
         EmojisResponse,
         EndpointRequest,
         EndpointResponse,
@@ -1872,7 +1947,8 @@ declare namespace entities {
         MetaDetailedOnly,
         MetaDetailed,
         SystemWebhook,
-        AbuseReportNotificationRecipient
+        AbuseReportNotificationRecipient,
+        EmojiApplication
     }
 }
 export { entities }

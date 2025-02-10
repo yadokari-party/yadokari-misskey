@@ -4,10 +4,10 @@
  */
 
 import { defineAsyncComponent } from 'vue';
+import { host } from '@@/js/config.js';
 import type { MenuItem } from '@/types/menu.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
-import { host } from '@@/js/config.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 
@@ -27,6 +27,11 @@ function toolsMenuItems(): MenuItem[] {
 		to: '/clicker',
 		text: '🍪👈',
 		icon: 'ti ti-cookie',
+	}, {
+		type: 'link',
+		to: '/custom-emoji-applications',
+		text: i18n.ts._emojiApplication.title,
+		icon: 'ti ti-triangle-plus-2',
 	}, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
 		type: 'link',
 		to: '/custom-emojis-manager',

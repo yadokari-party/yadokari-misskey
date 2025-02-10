@@ -1818,6 +1818,7 @@ _role:
     canImportFollowing: "フォローのインポートを許可"
     canImportMuting: "ミュートのインポートを許可"
     canImportUserLists: "リストのインポートを許可"
+    canCreateCustomEmojiApplications: "カスタム絵文字の申請を許可"
   _condition:
     roleAssignedTo: "マニュアルロールにアサイン済み"
     isLocal: "ローカルユーザー"
@@ -2931,3 +2932,19 @@ _captcha:
     _unknown:
       title: "CAPTCHAエラー"
       text: "想定外のエラーが発生しました。"
+
+_emojiApplication:
+  _status:
+    pending: "確認待ち"
+    canceled: "キャンセル"
+    accepted: "承認済み"
+    rejected: "否認"
+  _list:
+    title: "カスタム絵文字申請一覧"
+  title: "カスタム絵文字申請"
+  description: "絵文字を追加するための申請を行います。"
+  additionalInfo: "追加情報"
+  additionalInfoDescription: "絵文字の審査に必要なライセンスの根拠などの追加情報を記載してください。"
+  confirmCancel: "「{name}」の申請をキャンセルしますか？"
+  confirmAccept: "「{name}」の申請を承認しますか？"
+  confirmReject: "「{name}」の申請を拒否しますか？"

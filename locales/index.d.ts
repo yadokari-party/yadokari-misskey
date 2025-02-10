@@ -7037,6 +7037,10 @@ export interface Locale extends ILocale {
              * リストのインポートを許可
              */
             "canImportUserLists": string;
+            /**
+             * カスタム絵文字の申請を許可
+             */
+            "canCreateCustomEmojiApplications": string;
         };
         "_condition": {
             /**
@@ -10962,6 +10966,60 @@ export interface Locale extends ILocale {
                 "text": string;
             };
         };
+    };
+    "_emojiApplication": {
+        "_status": {
+            /**
+             * 確認待ち
+             */
+            "pending": string;
+            /**
+             * キャンセル
+             */
+            "canceled": string;
+            /**
+             * 承認済み
+             */
+            "accepted": string;
+            /**
+             * 否認
+             */
+            "rejected": string;
+        };
+        "_list": {
+            /**
+             * カスタム絵文字申請一覧
+             */
+            "title": string;
+        };
+        /**
+         * カスタム絵文字申請
+         */
+        "title": string;
+        /**
+         * 絵文字を追加するための申請を行います。
+         */
+        "description": string;
+        /**
+         * 追加情報
+         */
+        "additionalInfo": string;
+        /**
+         * 絵文字の審査に必要なライセンスの根拠などの追加情報を記載してください。
+         */
+        "additionalInfoDescription": string;
+        /**
+         * 「{name}」の申請をキャンセルしますか？
+         */
+        "confirmCancel": ParameterizedString<"name">;
+        /**
+         * 「{name}」の申請を承認しますか？
+         */
+        "confirmAccept": ParameterizedString<"name">;
+        /**
+         * 「{name}」の申請を拒否しますか？
+         */
+        "confirmReject": ParameterizedString<"name">;
     };
 }
 declare const locales: {

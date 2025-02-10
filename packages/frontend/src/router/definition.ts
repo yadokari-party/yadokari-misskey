@@ -338,6 +338,15 @@ const routes: RouteDef[] = [{
 	path: '/custom-emojis-manager',
 	component: page(() => import('@/pages/custom-emojis-manager.vue')),
 }, {
+	path: '/custom-emoji-applications',
+	component: page(() => import('@/pages/custom-emoji-applications/list.vue')),
+}, {
+	path: '/custom-emoji-applications/new',
+	component: page(() => import('@/pages/custom-emoji-applications/edit.vue')),
+}, {
+	path: '/custom-emoji-applications/:emojiApplicationId/edit',
+	component: page(() => import('@/pages/custom-emoji-applications/edit.vue')),
+}, {
 	path: '/avatar-decorations',
 	name: 'avatarDecorations',
 	component: page(() => import('@/pages/avatar-decorations.vue')),
@@ -383,6 +392,10 @@ const routes: RouteDef[] = [{
 		path: '/emojis2',
 		name: 'emojis2',
 		component: page(() => import('@/pages/admin/custom-emojis-manager2.vue')),
+	}, {
+		path: '/emoji-applications',
+		name: 'emojiApplications',
+		component: page(() => import('@/pages/admin/emoji-applications/list.vue')),
 	}, {
 		path: '/avatar-decorations',
 		name: 'avatarDecorations',

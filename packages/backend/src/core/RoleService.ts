@@ -63,6 +63,7 @@ export type RolePolicies = {
 	canImportFollowing: boolean;
 	canImportMuting: boolean;
 	canImportUserLists: boolean;
+	canCreateCustomEmojiApplications: boolean;
 };
 
 export const DEFAULT_POLICIES: RolePolicies = {
@@ -97,6 +98,7 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	canImportFollowing: true,
 	canImportMuting: true,
 	canImportUserLists: true,
+	canCreateCustomEmojiApplications: false,
 };
 
 @Injectable()
@@ -380,6 +382,7 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			inviteLimitCycle: calc('inviteLimitCycle', vs => Math.max(...vs)),
 			inviteExpirationTime: calc('inviteExpirationTime', vs => Math.max(...vs)),
 			canManageCustomEmojis: calc('canManageCustomEmojis', vs => vs.some(v => v === true)),
+			canCreateCustomEmojiApplications: calc('canCreateCustomEmojiApplications', vs => vs.some(v => v === true)),
 			canManageAvatarDecorations: calc('canManageAvatarDecorations', vs => vs.some(v => v === true)),
 			canSearchNotes: calc('canSearchNotes', vs => vs.some(v => v === true)),
 			canUseTranslator: calc('canUseTranslator', vs => vs.some(v => v === true)),

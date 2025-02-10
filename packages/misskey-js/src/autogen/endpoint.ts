@@ -43,6 +43,14 @@ import type {
 	AdminDriveFilesResponse,
 	AdminDriveShowFileRequest,
 	AdminDriveShowFileResponse,
+	AdminEmojiApplicationsRequest,
+	AdminEmojiApplicationsResponse,
+	AdminEmojiApplicationsAcceptRequest,
+	AdminEmojiApplicationsAcceptResponse,
+	AdminEmojiApplicationsRejectRequest,
+	AdminEmojiApplicationsRejectResponse,
+	AdminEmojiApplicationsUpdateRequest,
+	AdminEmojiApplicationsUpdateResponse,
 	AdminEmojiAddRequest,
 	AdminEmojiAddResponse,
 	AdminEmojiAddAliasesBulkRequest,
@@ -256,6 +264,16 @@ import type {
 	EmailAddressAvailableResponse,
 	EmojiRequest,
 	EmojiResponse,
+	EmojiApplicationsRequest,
+	EmojiApplicationsResponse,
+	EmojiApplicationsCancelRequest,
+	EmojiApplicationsCancelResponse,
+	EmojiApplicationsCreateRequest,
+	EmojiApplicationsCreateResponse,
+	EmojiApplicationsShowRequest,
+	EmojiApplicationsShowResponse,
+	EmojiApplicationsUpdateRequest,
+	EmojiApplicationsUpdateResponse,
 	EmojisResponse,
 	EndpointRequest,
 	EndpointResponse,
@@ -615,6 +633,10 @@ export type Endpoints = {
 	'admin/drive/cleanup': { req: EmptyRequest; res: EmptyResponse };
 	'admin/drive/files': { req: AdminDriveFilesRequest; res: AdminDriveFilesResponse };
 	'admin/drive/show-file': { req: AdminDriveShowFileRequest; res: AdminDriveShowFileResponse };
+	'admin/emoji-applications': { req: AdminEmojiApplicationsRequest; res: AdminEmojiApplicationsResponse };
+	'admin/emoji-applications/accept': { req: AdminEmojiApplicationsAcceptRequest; res: AdminEmojiApplicationsAcceptResponse };
+	'admin/emoji-applications/reject': { req: AdminEmojiApplicationsRejectRequest; res: AdminEmojiApplicationsRejectResponse };
+	'admin/emoji-applications/update': { req: AdminEmojiApplicationsUpdateRequest; res: AdminEmojiApplicationsUpdateResponse };
 	'admin/emoji/add': { req: AdminEmojiAddRequest; res: AdminEmojiAddResponse };
 	'admin/emoji/add-aliases-bulk': { req: AdminEmojiAddAliasesBulkRequest; res: EmptyResponse };
 	'admin/emoji/copy': { req: AdminEmojiCopyRequest; res: AdminEmojiCopyResponse };
@@ -754,6 +776,11 @@ export type Endpoints = {
 	'drive/stream': { req: DriveStreamRequest; res: DriveStreamResponse };
 	'email-address/available': { req: EmailAddressAvailableRequest; res: EmailAddressAvailableResponse };
 	'emoji': { req: EmojiRequest; res: EmojiResponse };
+	'emoji-applications': { req: EmojiApplicationsRequest; res: EmojiApplicationsResponse };
+	'emoji-applications/cancel': { req: EmojiApplicationsCancelRequest; res: EmojiApplicationsCancelResponse };
+	'emoji-applications/create': { req: EmojiApplicationsCreateRequest; res: EmojiApplicationsCreateResponse };
+	'emoji-applications/show': { req: EmojiApplicationsShowRequest; res: EmojiApplicationsShowResponse };
+	'emoji-applications/update': { req: EmojiApplicationsUpdateRequest; res: EmojiApplicationsUpdateResponse };
 	'emojis': { req: EmptyRequest; res: EmojisResponse };
 	'endpoint': { req: EndpointRequest; res: EndpointResponse };
 	'endpoints': { req: EmptyRequest; res: EndpointsResponse };

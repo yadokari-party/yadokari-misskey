@@ -26,6 +26,7 @@ import { AvatarDecorationService } from './AvatarDecorationService.js';
 import { CaptchaService } from './CaptchaService.js';
 import { CreateSystemUserService } from './CreateSystemUserService.js';
 import { CustomEmojiService } from './CustomEmojiService.js';
+import { CustomEmojiApplicationService } from './CustomEmojiApplicationService.js';
 import { DeleteAccountService } from './DeleteAccountService.js';
 import { DownloadService } from './DownloadService.js';
 import { DriveService } from './DriveService.js';
@@ -106,6 +107,7 @@ import { ClipEntityService } from './entities/ClipEntityService.js';
 import { DriveFileEntityService } from './entities/DriveFileEntityService.js';
 import { DriveFolderEntityService } from './entities/DriveFolderEntityService.js';
 import { EmojiEntityService } from './entities/EmojiEntityService.js';
+import { EmojiApplicationEntityService } from './entities/EmojiApplicationEntityService.js';
 import { FollowingEntityService } from './entities/FollowingEntityService.js';
 import { FollowRequestEntityService } from './entities/FollowRequestEntityService.js';
 import { GalleryLikeEntityService } from './entities/GalleryLikeEntityService.js';
@@ -169,6 +171,7 @@ const $AvatarDecorationService: Provider = { provide: 'AvatarDecorationService',
 const $CaptchaService: Provider = { provide: 'CaptchaService', useExisting: CaptchaService };
 const $CreateSystemUserService: Provider = { provide: 'CreateSystemUserService', useExisting: CreateSystemUserService };
 const $CustomEmojiService: Provider = { provide: 'CustomEmojiService', useExisting: CustomEmojiService };
+const $CustomEmojiApplicationService: Provider = { provide: 'CustomEmojiApplicationService', useExisting: CustomEmojiApplicationService };
 const $DeleteAccountService: Provider = { provide: 'DeleteAccountService', useExisting: DeleteAccountService };
 const $DownloadService: Provider = { provide: 'DownloadService', useExisting: DownloadService };
 const $DriveService: Provider = { provide: 'DriveService', useExisting: DriveService };
@@ -255,6 +258,7 @@ const $ClipEntityService: Provider = { provide: 'ClipEntityService', useExisting
 const $DriveFileEntityService: Provider = { provide: 'DriveFileEntityService', useExisting: DriveFileEntityService };
 const $DriveFolderEntityService: Provider = { provide: 'DriveFolderEntityService', useExisting: DriveFolderEntityService };
 const $EmojiEntityService: Provider = { provide: 'EmojiEntityService', useExisting: EmojiEntityService };
+const $EmojiApplicationEntityService: Provider = { provide: 'EmojiApplicationEntityService', useExisting: EmojiApplicationEntityService };
 const $FollowingEntityService: Provider = { provide: 'FollowingEntityService', useExisting: FollowingEntityService };
 const $FollowRequestEntityService: Provider = { provide: 'FollowRequestEntityService', useExisting: FollowRequestEntityService };
 const $GalleryLikeEntityService: Provider = { provide: 'GalleryLikeEntityService', useExisting: GalleryLikeEntityService };
@@ -320,6 +324,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		CaptchaService,
 		CreateSystemUserService,
 		CustomEmojiService,
+		CustomEmojiApplicationService,
 		DeleteAccountService,
 		DownloadService,
 		DriveService,
@@ -406,6 +411,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		DriveFileEntityService,
 		DriveFolderEntityService,
 		EmojiEntityService,
+		EmojiApplicationEntityService,
 		FollowingEntityService,
 		FollowRequestEntityService,
 		GalleryLikeEntityService,
@@ -467,6 +473,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$CaptchaService,
 		$CreateSystemUserService,
 		$CustomEmojiService,
+		$CustomEmojiApplicationService,
 		$DeleteAccountService,
 		$DownloadService,
 		$DriveService,
@@ -553,6 +560,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$DriveFileEntityService,
 		$DriveFolderEntityService,
 		$EmojiEntityService,
+		$EmojiApplicationEntityService,
 		$FollowingEntityService,
 		$FollowRequestEntityService,
 		$GalleryLikeEntityService,
@@ -615,6 +623,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		CaptchaService,
 		CreateSystemUserService,
 		CustomEmojiService,
+		CustomEmojiApplicationService,
 		DeleteAccountService,
 		DownloadService,
 		DriveService,
@@ -700,6 +709,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		DriveFileEntityService,
 		DriveFolderEntityService,
 		EmojiEntityService,
+		EmojiApplicationEntityService,
 		FollowingEntityService,
 		FollowRequestEntityService,
 		GalleryLikeEntityService,
@@ -845,6 +855,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$DriveFileEntityService,
 		$DriveFolderEntityService,
 		$EmojiEntityService,
+		$EmojiApplicationEntityService,
 		$FollowingEntityService,
 		$FollowRequestEntityService,
 		$GalleryLikeEntityService,
