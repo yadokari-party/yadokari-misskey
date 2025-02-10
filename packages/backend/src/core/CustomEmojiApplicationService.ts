@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { DI } from '@/di-symbols.js';
 import { IdService } from '@/core/IdService.js';
@@ -15,7 +15,7 @@ import { DriveService } from './DriveService.js';
 import { CustomEmojiService } from './CustomEmojiService.js';
 
 @Injectable()
-export class CustomEmojiApplicationService implements OnApplicationShutdown {
+export class CustomEmojiApplicationService {
 	constructor(
 		@Inject(DI.emojiApplicationsRepoisitory)
 		private emojiApplicationsRepository: EmojiApplicationsRepository,
@@ -30,9 +30,6 @@ export class CustomEmojiApplicationService implements OnApplicationShutdown {
 		private driveService: DriveService,
 		private roleService: RoleService,
 	) {
-	}
-	onApplicationShutdown(signal?: string) {
-		throw new Error('Method not implemented.');
 	}
 
 	private async copyFileToSystem(fileId: MiDriveFile['id']): Promise<MiDriveFile> {
