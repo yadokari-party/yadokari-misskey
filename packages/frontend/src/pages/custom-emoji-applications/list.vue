@@ -50,7 +50,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, shallowRef, type Ref } from 'vue';
+import { computed, defineAsyncComponent, ref, shallowRef } from 'vue';
+import type { Ref } from 'vue';
 import type * as Misskey from 'misskey-js';
 import MkPagination from '@/components/MkPagination.vue';
 import * as os from '@/os.js';
