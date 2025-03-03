@@ -25,7 +25,7 @@ jobs:
         platform:
           - linux/amd64
           - linux/arm64
-    if: github.repository == 'team-shahu/misskey'
+    if: github.repository == 'yadokari-party/yadokari-misskey'
     steps:
       - name: Prepare
         run: |
