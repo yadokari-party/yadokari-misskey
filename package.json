@@ -1,10 +1,10 @@
 {
 	"name": "misskey",
-	"version": "2025.2.1",
+	"version": "2025.2.1-yadokari.1.0.0",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/misskey-dev/misskey.git"
+		"url": "https://github.com/yadokari-party/yadokari-misskey"
 	},
 	"packageManager": "pnpm@9.15.4",
 	"workspaces": [
