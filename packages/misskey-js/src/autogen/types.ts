@@ -170,6 +170,42 @@ export type paths = {
      */
     post: operations['admin___announcements___update'];
   };
+  '/admin/avatar-decoration-applications': {
+    /**
+     * admin/avatar-decoration-applications
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
+     */
+    post: operations['admin___avatar-decoration-applications'];
+  };
+  '/admin/avatar-decoration-applications/accept': {
+    /**
+     * admin/avatar-decoration-applications/accept
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
+     */
+    post: operations['admin___avatar-decoration-applications___accept'];
+  };
+  '/admin/avatar-decoration-applications/reject': {
+    /**
+     * admin/avatar-decoration-applications/reject
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
+     */
+    post: operations['admin___avatar-decoration-applications___reject'];
+  };
+  '/admin/avatar-decoration-applications/update': {
+    /**
+     * admin/avatar-decoration-applications/update
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
+     */
+    post: operations['admin___avatar-decoration-applications___update'];
+  };
   '/admin/avatar-decorations/create': {
     /**
      * admin/avatar-decorations/create
@@ -1023,6 +1059,51 @@ export type paths = {
      * **Credential required**: *No*
      */
     post: operations['auth___session___userkey'];
+  };
+  '/avatar-decoration-applications': {
+    /**
+     * avatar-decoration-applications
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *read:account*
+     */
+    post: operations['avatar-decoration-applications'];
+  };
+  '/avatar-decoration-applications/cancel': {
+    /**
+     * avatar-decoration-applications/cancel
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:account*
+     */
+    post: operations['avatar-decoration-applications___cancel'];
+  };
+  '/avatar-decoration-applications/create': {
+    /**
+     * avatar-decoration-applications/create
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:account*
+     */
+    post: operations['avatar-decoration-applications___create'];
+  };
+  '/avatar-decoration-applications/show': {
+    /**
+     * avatar-decoration-applications/show
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *read:account*
+     */
+    post: operations['avatar-decoration-applications___show'];
+  };
+  '/avatar-decoration-applications/update': {
+    /**
+     * avatar-decoration-applications/update
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:account*
+     */
+    post: operations['avatar-decoration-applications___update'];
   };
   '/blocking/create': {
     /**
@@ -5020,6 +5101,7 @@ export type components = {
       canImportMuting: boolean;
       canImportUserLists: boolean;
       canCreateCustomEmojiApplications: boolean;
+      canCreateAvatarDecorationApplications: boolean;
     };
     ReversiGameLite: {
       /** Format: id */
@@ -5236,6 +5318,22 @@ export type components = {
       license: string | null;
       isSensitive: boolean;
       localOnly: boolean;
+      additionalInfo: string | null;
+      comment?: string | null;
+    };
+    AvatarDecorationApplication: {
+      /** Format: id */
+      id: string;
+      /** @enum {string} */
+      status: 'pending' | 'canceled' | 'rejected' | 'accepted';
+      /** Format: id */
+      parentId: string | null;
+      /** Format: id */
+      userId: string | null;
+      user?: components['schemas']['User'] | null;
+      name: string;
+      file: components['schemas']['DriveFile'];
+      description: string | null;
       additionalInfo: string | null;
       comment?: string | null;
     };
@@ -6277,6 +6375,240 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/avatar-decoration-applications
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
+   */
+  'admin___avatar-decoration-applications': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          sinceId?: string | null;
+          /** Format: misskey:id */
+          untilId?: string | null;
+          /** @default 10 */
+          limit?: number;
+          /** @enum {string|null} */
+          status?: 'all' | 'pending' | 'canceled' | 'accepted' | 'rejected';
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['AvatarDecorationApplication'][];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/avatar-decoration-applications/accept
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
+   */
+  'admin___avatar-decoration-applications___accept': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          avatarDecorationApplicationId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            /** Format: id */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string | null;
+            name: string;
+            description: string;
+            url: string;
+            roleIdsThatCanBeUsedThisDecoration: string[];
+          };
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/avatar-decoration-applications/reject
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
+   */
+  'admin___avatar-decoration-applications___reject': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          avatarDecorationApplicationId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['AvatarDecorationApplication'];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/avatar-decoration-applications/update
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
+   */
+  'admin___avatar-decoration-applications___update': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          avatarDecorationApplicationId: string;
+          comment: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['AvatarDecorationApplication'];
+        };
       };
       /** @description Client error */
       400: {
@@ -12025,6 +12357,303 @@ export type operations = {
       };
       /** @description I'm Ai */
       418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * avatar-decoration-applications
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *read:account*
+   */
+  'avatar-decoration-applications': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          sinceId?: string;
+          /** Format: misskey:id */
+          untilId?: string;
+          limit?: number;
+          /** @enum {string|null} */
+          status?: 'all' | 'pending' | 'canceled' | 'accepted' | 'rejected';
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['AvatarDecorationApplication'][];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * avatar-decoration-applications/cancel
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:account*
+   */
+  'avatar-decoration-applications___cancel': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          avatarDecorationApplicationId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * avatar-decoration-applications/create
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:account*
+   */
+  'avatar-decoration-applications___create': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          parentId?: string | null;
+          name: string;
+          /** Format: misskey:id */
+          fileId: string;
+          description?: string | null;
+          additionalInfo?: string | null;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['AvatarDecorationApplication'];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Too many requests */
+      429: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * avatar-decoration-applications/show
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *read:account*
+   */
+  'avatar-decoration-applications___show': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          id: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['AvatarDecorationApplication'];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * avatar-decoration-applications/update
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:account*
+   */
+  'avatar-decoration-applications___update': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          avatarDecorationApplicationId: string;
+          name: string;
+          /** Format: misskey:id */
+          fileId: string;
+          description?: string | null;
+          additionalInfo?: string | null;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['AvatarDecorationApplication'];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Too many requests */
+      429: {
         content: {
           'application/json': components['schemas']['Error'];
         };

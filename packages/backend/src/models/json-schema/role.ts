@@ -296,6 +296,10 @@ export const packedRolePoliciesSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
+		canCreateAvatarDecorationApplications: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 	},
 } as const;
 

@@ -15,6 +15,7 @@ import { SystemWebhookService } from '@/core/SystemWebhookService.js';
 import { UserSearchService } from '@/core/UserSearchService.js';
 import { WebhookTestService } from '@/core/WebhookTestService.js';
 import { FlashService } from '@/core/FlashService.js';
+import { AvatarDecorationApplicationService } from './AvatarDecorationApplicationService.js';
 import { AccountMoveService } from './AccountMoveService.js';
 import { AccountUpdateService } from './AccountUpdateService.js';
 import { AiService } from './AiService.js';
@@ -101,6 +102,7 @@ import { AnnouncementEntityService } from './entities/AnnouncementEntityService.
 import { AntennaEntityService } from './entities/AntennaEntityService.js';
 import { AppEntityService } from './entities/AppEntityService.js';
 import { AuthSessionEntityService } from './entities/AuthSessionEntityService.js';
+import { AvatarDecorationApplicationEntityService } from './entities/AvatarDecorationApplicationEntityService.js';
 import { BlockingEntityService } from './entities/BlockingEntityService.js';
 import { ChannelEntityService } from './entities/ChannelEntityService.js';
 import { ClipEntityService } from './entities/ClipEntityService.js';
@@ -168,6 +170,7 @@ const $AntennaService: Provider = { provide: 'AntennaService', useExisting: Ante
 const $AppLockService: Provider = { provide: 'AppLockService', useExisting: AppLockService };
 const $AchievementService: Provider = { provide: 'AchievementService', useExisting: AchievementService };
 const $AvatarDecorationService: Provider = { provide: 'AvatarDecorationService', useExisting: AvatarDecorationService };
+const $AvatarDecorationApplicationService: Provider = { provide: 'AvatarDecorationApplicationService', useExisting: AvatarDecorationApplicationService };
 const $CaptchaService: Provider = { provide: 'CaptchaService', useExisting: CaptchaService };
 const $CreateSystemUserService: Provider = { provide: 'CreateSystemUserService', useExisting: CreateSystemUserService };
 const $CustomEmojiService: Provider = { provide: 'CustomEmojiService', useExisting: CustomEmojiService };
@@ -252,6 +255,7 @@ const $AbuseReportNotificationRecipientEntityService: Provider = { provide: 'Abu
 const $AntennaEntityService: Provider = { provide: 'AntennaEntityService', useExisting: AntennaEntityService };
 const $AppEntityService: Provider = { provide: 'AppEntityService', useExisting: AppEntityService };
 const $AuthSessionEntityService: Provider = { provide: 'AuthSessionEntityService', useExisting: AuthSessionEntityService };
+const $AvatarDecorationApplicationEntityService: Provider = { provide: 'AvatarDecorationApplicationEntityService', useExisting: AvatarDecorationApplicationEntityService };
 const $BlockingEntityService: Provider = { provide: 'BlockingEntityService', useExisting: BlockingEntityService };
 const $ChannelEntityService: Provider = { provide: 'ChannelEntityService', useExisting: ChannelEntityService };
 const $ClipEntityService: Provider = { provide: 'ClipEntityService', useExisting: ClipEntityService };
@@ -321,6 +325,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		AppLockService,
 		AchievementService,
 		AvatarDecorationService,
+		AvatarDecorationApplicationService,
 		CaptchaService,
 		CreateSystemUserService,
 		CustomEmojiService,
@@ -405,6 +410,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		AntennaEntityService,
 		AppEntityService,
 		AuthSessionEntityService,
+		AvatarDecorationApplicationEntityService,
 		BlockingEntityService,
 		ChannelEntityService,
 		ClipEntityService,
@@ -470,6 +476,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$AppLockService,
 		$AchievementService,
 		$AvatarDecorationService,
+		$AvatarDecorationApplicationService,
 		$CaptchaService,
 		$CreateSystemUserService,
 		$CustomEmojiService,
@@ -554,6 +561,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$AntennaEntityService,
 		$AppEntityService,
 		$AuthSessionEntityService,
+		$AvatarDecorationApplicationEntityService,
 		$BlockingEntityService,
 		$ChannelEntityService,
 		$ClipEntityService,
@@ -620,6 +628,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		AppLockService,
 		AchievementService,
 		AvatarDecorationService,
+		AvatarDecorationApplicationService,
 		CaptchaService,
 		CreateSystemUserService,
 		CustomEmojiService,
@@ -703,6 +712,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		AntennaEntityService,
 		AppEntityService,
 		AuthSessionEntityService,
+		AvatarDecorationApplicationEntityService,
 		BlockingEntityService,
 		ChannelEntityService,
 		ClipEntityService,
@@ -768,6 +778,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$AppLockService,
 		$AchievementService,
 		$AvatarDecorationService,
+		$AvatarDecorationApplicationService,
 		$CaptchaService,
 		$CreateSystemUserService,
 		$CustomEmojiService,
@@ -849,6 +860,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$AntennaEntityService,
 		$AppEntityService,
 		$AuthSessionEntityService,
+		$AvatarDecorationApplicationEntityService,
 		$BlockingEntityService,
 		$ChannelEntityService,
 		$ClipEntityService,

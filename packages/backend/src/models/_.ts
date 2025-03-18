@@ -80,6 +80,7 @@ import { MiFlashLike } from '@/models/FlashLike.js';
 import { MiUserListFavorite } from '@/models/UserListFavorite.js';
 import { MiBubbleGameRecord } from '@/models/BubbleGameRecord.js';
 import { MiReversiGame } from '@/models/ReversiGame.js';
+import { MiAvatarDecorationApplication } from './AvatarDecorationApplication.js';
 import type { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity.js';
 
 export interface MiRepository<T extends ObjectLiteral> {
@@ -135,6 +136,7 @@ export {
 	MiAntenna,
 	MiApp,
 	MiAvatarDecoration,
+	MiAvatarDecorationApplication,
 	MiAuthSession,
 	MiBlocking,
 	MiChannelFollowing,
@@ -207,6 +209,7 @@ export type AnnouncementReadsRepository = Repository<MiAnnouncementRead> & MiRep
 export type AntennasRepository = Repository<MiAntenna> & MiRepository<MiAntenna>;
 export type AppsRepository = Repository<MiApp> & MiRepository<MiApp>;
 export type AvatarDecorationsRepository = Repository<MiAvatarDecoration> & MiRepository<MiAvatarDecoration>;
+export type AvatarDecorationApplicationsRepository = Repository<MiAvatarDecorationApplication> & MiRepository<MiAvatarDecorationApplication>;
 export type AuthSessionsRepository = Repository<MiAuthSession> & MiRepository<MiAuthSession>;
 export type BlockingsRepository = Repository<MiBlocking> & MiRepository<MiBlocking>;
 export type ChannelFollowingsRepository = Repository<MiChannelFollowing> & MiRepository<MiChannelFollowing>;

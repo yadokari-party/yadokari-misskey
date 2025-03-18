@@ -352,6 +352,14 @@ const routes: RouteDef[] = [{
 	name: 'avatarDecorations',
 	component: page(() => import('@/pages/avatar-decorations.vue')),
 }, {
+	path: '/avatar-decoration-applications',
+	name: 'avatarDecorationApplications',
+	component: page(() => import('@/pages/avatar-decoration-applications/list.vue')),
+}, {
+	path: '/avatar-decoration-applications/edit/:id',
+	name: 'editAvatarDecorationApplications',
+	component: page(() => import('@/pages/avatar-decoration-applications/list.vue')),
+}, {
 	path: '/registry/keys/:domain/:path(*)?',
 	component: page(() => import('@/pages/registry.keys.vue')),
 }, {
@@ -401,6 +409,10 @@ const routes: RouteDef[] = [{
 		path: '/avatar-decorations',
 		name: 'avatarDecorations',
 		component: page(() => import('@/pages/avatar-decorations.vue')),
+	}, {
+		path: '/avatar-decoration-applications',
+		name: 'avatarDecorationApplications',
+		component: page(() => import('@/pages/admin/avatar-decoration-applications/list.vue')),
 	}, {
 		path: '/queue',
 		name: 'queue',
