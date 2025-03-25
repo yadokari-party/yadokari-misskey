@@ -64,6 +64,7 @@ export type RolePolicies = {
 	canImportMuting: boolean;
 	canImportUserLists: boolean;
 	canCreateCustomEmojiApplications: boolean;
+	canCreateAvatarDecorationApplications: boolean;
 };
 
 export const DEFAULT_POLICIES: RolePolicies = {
@@ -99,6 +100,7 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	canImportMuting: true,
 	canImportUserLists: true,
 	canCreateCustomEmojiApplications: false,
+	canCreateAvatarDecorationApplications: false,
 };
 
 @Injectable()
@@ -384,6 +386,7 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			canManageCustomEmojis: calc('canManageCustomEmojis', vs => vs.some(v => v === true)),
 			canCreateCustomEmojiApplications: calc('canCreateCustomEmojiApplications', vs => vs.some(v => v === true)),
 			canManageAvatarDecorations: calc('canManageAvatarDecorations', vs => vs.some(v => v === true)),
+			canCreateAvatarDecorationApplications: calc('canCreateAvatarDecorationApplications', vs => vs.some(v => v === true)),
 			canSearchNotes: calc('canSearchNotes', vs => vs.some(v => v === true)),
 			canUseTranslator: calc('canUseTranslator', vs => vs.some(v => v === true)),
 			canHideAds: calc('canHideAds', vs => vs.some(v => v === true)),

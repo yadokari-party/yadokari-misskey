@@ -16,6 +16,7 @@ import {
 	MiApp,
 	MiAuthSession,
 	MiAvatarDecoration,
+	MiAvatarDecorationApplication,
 	MiBlocking,
 	MiBubbleGameRecord,
 	MiChannel,
@@ -115,6 +116,12 @@ const $appsRepository: Provider = {
 const $avatarDecorationsRepository: Provider = {
 	provide: DI.avatarDecorationsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiAvatarDecoration).extend(miRepository as MiRepository<MiAvatarDecoration>),
+	inject: [DI.db],
+};
+
+const $avatarDecorationApplicationsRepository: Provider = {
+	provide: DI.avatarDecorationApplicationsRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiAvatarDecorationApplication).extend(miRepository as MiRepository<MiAvatarDecorationApplication>),
 	inject: [DI.db],
 };
 
@@ -511,6 +518,7 @@ const $reversiGamesRepository: Provider = {
 		$announcementReadsRepository,
 		$appsRepository,
 		$avatarDecorationsRepository,
+		$avatarDecorationApplicationsRepository,
 		$noteFavoritesRepository,
 		$noteThreadMutingsRepository,
 		$noteReactionsRepository,
@@ -583,6 +591,7 @@ const $reversiGamesRepository: Provider = {
 		$announcementReadsRepository,
 		$appsRepository,
 		$avatarDecorationsRepository,
+		$avatarDecorationApplicationsRepository,
 		$noteFavoritesRepository,
 		$noteThreadMutingsRepository,
 		$noteReactionsRepository,

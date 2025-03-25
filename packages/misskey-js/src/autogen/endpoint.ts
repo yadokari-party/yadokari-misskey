@@ -29,6 +29,14 @@ import type {
 	AdminAnnouncementsListRequest,
 	AdminAnnouncementsListResponse,
 	AdminAnnouncementsUpdateRequest,
+	AdminAvatarDecorationApplicationsRequest,
+	AdminAvatarDecorationApplicationsResponse,
+	AdminAvatarDecorationApplicationsAcceptRequest,
+	AdminAvatarDecorationApplicationsAcceptResponse,
+	AdminAvatarDecorationApplicationsRejectRequest,
+	AdminAvatarDecorationApplicationsRejectResponse,
+	AdminAvatarDecorationApplicationsUpdateRequest,
+	AdminAvatarDecorationApplicationsUpdateResponse,
 	AdminAvatarDecorationsCreateRequest,
 	AdminAvatarDecorationsCreateResponse,
 	AdminAvatarDecorationsDeleteRequest,
@@ -160,6 +168,16 @@ import type {
 	AuthSessionShowResponse,
 	AuthSessionUserkeyRequest,
 	AuthSessionUserkeyResponse,
+	AvatarDecorationApplicationsRequest,
+	AvatarDecorationApplicationsResponse,
+	AvatarDecorationApplicationsCancelRequest,
+	AvatarDecorationApplicationsCancelResponse,
+	AvatarDecorationApplicationsCreateRequest,
+	AvatarDecorationApplicationsCreateResponse,
+	AvatarDecorationApplicationsShowRequest,
+	AvatarDecorationApplicationsShowResponse,
+	AvatarDecorationApplicationsUpdateRequest,
+	AvatarDecorationApplicationsUpdateResponse,
 	BlockingCreateRequest,
 	BlockingCreateResponse,
 	BlockingDeleteRequest,
@@ -621,6 +639,10 @@ export type Endpoints = {
 	'admin/announcements/delete': { req: AdminAnnouncementsDeleteRequest; res: EmptyResponse };
 	'admin/announcements/list': { req: AdminAnnouncementsListRequest; res: AdminAnnouncementsListResponse };
 	'admin/announcements/update': { req: AdminAnnouncementsUpdateRequest; res: EmptyResponse };
+	'admin/avatar-decoration-applications': { req: AdminAvatarDecorationApplicationsRequest; res: AdminAvatarDecorationApplicationsResponse };
+	'admin/avatar-decoration-applications/accept': { req: AdminAvatarDecorationApplicationsAcceptRequest; res: AdminAvatarDecorationApplicationsAcceptResponse };
+	'admin/avatar-decoration-applications/reject': { req: AdminAvatarDecorationApplicationsRejectRequest; res: AdminAvatarDecorationApplicationsRejectResponse };
+	'admin/avatar-decoration-applications/update': { req: AdminAvatarDecorationApplicationsUpdateRequest; res: AdminAvatarDecorationApplicationsUpdateResponse };
 	'admin/avatar-decorations/create': { req: AdminAvatarDecorationsCreateRequest; res: AdminAvatarDecorationsCreateResponse };
 	'admin/avatar-decorations/delete': { req: AdminAvatarDecorationsDeleteRequest; res: EmptyResponse };
 	'admin/avatar-decorations/list': { req: AdminAvatarDecorationsListRequest; res: AdminAvatarDecorationsListResponse };
@@ -715,6 +737,11 @@ export type Endpoints = {
 	'auth/session/generate': { req: AuthSessionGenerateRequest; res: AuthSessionGenerateResponse };
 	'auth/session/show': { req: AuthSessionShowRequest; res: AuthSessionShowResponse };
 	'auth/session/userkey': { req: AuthSessionUserkeyRequest; res: AuthSessionUserkeyResponse };
+	'avatar-decoration-applications': { req: AvatarDecorationApplicationsRequest; res: AvatarDecorationApplicationsResponse };
+	'avatar-decoration-applications/cancel': { req: AvatarDecorationApplicationsCancelRequest; res: AvatarDecorationApplicationsCancelResponse };
+	'avatar-decoration-applications/create': { req: AvatarDecorationApplicationsCreateRequest; res: AvatarDecorationApplicationsCreateResponse };
+	'avatar-decoration-applications/show': { req: AvatarDecorationApplicationsShowRequest; res: AvatarDecorationApplicationsShowResponse };
+	'avatar-decoration-applications/update': { req: AvatarDecorationApplicationsUpdateRequest; res: AvatarDecorationApplicationsUpdateResponse };
 	'blocking/create': { req: BlockingCreateRequest; res: BlockingCreateResponse };
 	'blocking/delete': { req: BlockingDeleteRequest; res: BlockingDeleteResponse };
 	'blocking/list': { req: BlockingListRequest; res: BlockingListResponse };

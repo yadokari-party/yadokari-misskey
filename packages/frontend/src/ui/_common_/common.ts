@@ -37,12 +37,18 @@ function toolsMenuItems(): MenuItem[] {
 		to: '/custom-emojis-manager',
 		text: i18n.ts.manageCustomEmojis,
 		icon: 'ti ti-icons',
-	} : undefined, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
-		type: 'link',
-		to: '/avatar-decorations',
-		text: i18n.ts.manageAvatarDecorations,
-		icon: 'ti ti-sparkles',
-	} : undefined];
+	} : undefined,
+									{
+										type: 'link',
+										to: '/avatar-decoration-applications',
+										text: i18n.ts._avatarDecorationApplication.title,
+										icon: 'ti ti-triangle-plus-2',
+									}, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
+										type: 'link',
+										to: '/avatar-decorations',
+										text: i18n.ts.manageAvatarDecorations,
+										icon: 'ti ti-sparkles',
+									} : undefined];
 }
 
 export function openInstanceMenu(ev: MouseEvent) {

@@ -55,3 +55,4 @@ export type MetaDetailed = components['schemas']['MetaDetailed'];
 export type SystemWebhook = components['schemas']['SystemWebhook'];
 export type AbuseReportNotificationRecipient = components['schemas']['AbuseReportNotificationRecipient'];
 export type EmojiApplication = components['schemas']['EmojiApplication'];
+export type AvatarDecorationApplication = components['schemas']['AvatarDecorationApplication'];
