@@ -5,9 +5,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <SearchMarker
-	path="/settings/shahu-settings" :label="i18n.ts.originalFeature"
+	path="/settings/original-features" :label="i18n.ts.originalFeature"
 	:keywords="['originalFeature', 'preferences']" icon="ti ti-adjustments"
-	markerId="shahu-settings"
+	markerId="original-features"
 >
 	<div class="_gaps_m">
 		<MkFeatureBanner icon="/client-assets/gear_3d.png" color="#7f6666">
@@ -74,7 +74,7 @@ const headerActions = computed(() => []);
 const headerTabs = computed(() => []);
 
 definePage(() => ({
-	title: 'shahu-fork',
+	title: 'original-features',
 	icon: 'ti ti-adjustments',
 }));
 </script>
