@@ -27,28 +27,27 @@ function toolsMenuItems(): MenuItem[] {
 		to: '/clicker',
 		text: '🍪👈',
 		icon: 'ti ti-cookie',
-	}, {
+	}, ($i && ($i.isModerator || $i.policies.canCreateCustomEmojiApplications)) ? {
 		type: 'link',
 		to: '/custom-emoji-applications',
 		text: i18n.ts._emojiApplication.title,
 		icon: 'ti ti-triangle-plus-2',
-	}, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
+	} : undefined, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
 		type: 'link',
 		to: '/custom-emojis-manager',
 		text: i18n.ts.manageCustomEmojis,
 		icon: 'ti ti-icons',
-	} : undefined,
-									{
-										type: 'link',
-										to: '/avatar-decoration-applications',
-										text: i18n.ts._avatarDecorationApplication.title,
-										icon: 'ti ti-triangle-plus-2',
-									}, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
-										type: 'link',
-										to: '/avatar-decorations',
-										text: i18n.ts.manageAvatarDecorations,
-										icon: 'ti ti-sparkles',
-									} : undefined];
+	} : undefined, ($i && ($i.isModerator || $i.policies.canCreateAvatarDecorationApplications)) ? {
+		type: 'link',
+		to: '/avatar-decoration-applications',
+		text: i18n.ts._avatarDecorationApplication.title,
+		icon: 'ti ti-triangle-plus-2',
+	} : undefined, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
+		type: 'link',
+		to: '/avatar-decorations',
+		text: i18n.ts.manageAvatarDecorations,
+		icon: 'ti ti-sparkles',
+	} : undefined];
 }
 
 export function openInstanceMenu(ev: MouseEvent) {

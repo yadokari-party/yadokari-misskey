@@ -360,12 +360,15 @@ export const ROUTE_DEF = [{
 }, {
 	path: '/custom-emoji-applications',
 	component: page(() => import('@/pages/custom-emoji-applications/list.vue')),
+	loginRequired: true,
 }, {
 	path: '/custom-emoji-applications/new',
 	component: page(() => import('@/pages/custom-emoji-applications/edit.vue')),
+	loginRequired: true,
 }, {
 	path: '/custom-emoji-applications/:emojiApplicationId/edit',
 	component: page(() => import('@/pages/custom-emoji-applications/edit.vue')),
+	loginRequired: true,
 }, {
 	path: '/avatar-decorations',
 	name: 'avatarDecorations',
@@ -374,14 +377,17 @@ export const ROUTE_DEF = [{
 	path: '/avatar-decoration-applications',
 	name: 'avatarDecorationApplications',
 	component: page(() => import('@/pages/avatar-decoration-applications/list.vue')),
+	loginRequired: true,
 }, {
 	path: '/avatar-decoration-applications/new',
 	name: 'newAvatarDecorationApplications',
 	component: page(() => import('@/pages/avatar-decoration-applications/edit.vue')),
+	loginRequired: true,
 }, {
 	path: '/avatar-decoration-applications/edit/:id',
 	name: 'editAvatarDecorationApplications',
 	component: page(() => import('@/pages/avatar-decoration-applications/edit.vue')),
+	loginRequired: true,
 }, {
 	path: '/registry/keys/:domain/:path(*)?',
 	component: page(() => import('@/pages/registry.keys.vue')),
