@@ -9,7 +9,7 @@ import type { MenuItem } from '@/types/menu.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 
 function toolsMenuItems(): MenuItem[] {
 	return [{
@@ -157,8 +157,8 @@ export function openInstanceMenu(ev: MouseEvent) {
 		menuItems.push({
 			text: i18n.ts._initialTutorial.launchTutorial,
 			icon: 'ti ti-presentation',
-			action: () => {
-				const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkTutorialDialog.vue')), {}, {
+			action: async () => {
+				const { dispose } = await os.popupAsyncWithDialog(import('@/components/MkTutorialDialog.vue').then(x => x.default), {}, {
 					closed: () => dispose(),
 				});
 			},

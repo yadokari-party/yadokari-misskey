@@ -4,9 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="900">
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 900px;">
 		<div :class="$style.root" class="_gaps">
 			<div :class="$style.inputs" class="_gaps">
 				<MkSelect v-model="status" style="margin: 0; flex: 1;">
@@ -30,22 +29,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</MkPagination>
 		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, shallowRef, ref } from 'vue';
-import XHeader from '../_header_.vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import type { Ref } from 'vue';
 import type * as Misskey from 'misskey-js';
 import MkPagination from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import XAvatarDecorationApplication from '@/components/avatar-decoration-application/MkAvatarDecorationApplication.vue';
 import MkSelect from '@/components/MkSelect.vue';
 
-const avatarDecorationApplications = shallowRef<InstanceType<typeof MkPagination>>();
+const avatarDecorationApplications = useTemplateRef('avatarDecorationApplications');
 
 const status : Ref<'all' | Misskey.entities.AvatarDecorationApplication['status']> = ref('all');
 
@@ -58,8 +56,7 @@ const pagination = {
 };
 
 const reload = () => {
-	console.log('reload');
-	avatarDecorationApplications.value?.reload();
+	avatarDecorationApplications.value?.paginator?.reload();
 };
 
 const headerActions = computed(() => [
@@ -72,7 +69,7 @@ const headerActions = computed(() => [
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._avatarDecorationApplication.title,
 	icon: 'ti ti-triangle-plus-2',
 }));

@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import * as Misskey from 'misskey-js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkAvatarDecorationApplicationEditor from '@/components/avatar-decoration-application/MkAvatarDecorationApplicationEditor.vue';
 import { i18n } from '@/i18n.js';
 
@@ -24,7 +24,7 @@ defineProps<{
 	avatarDecorationApplication?: Misskey.entities.AvatarDecorationApplication,
 }>();
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._avatarDecorationApplication.title,
 	icon: 'ti ti-triangle-plus-2',
 }));

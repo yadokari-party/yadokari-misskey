@@ -5,9 +5,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div>
-	<MkStickyContainer>
-		<template #header><MkPageHeader :actions="headerActions"/></template>
-		<MkSpacer :contentMax="900">
+	<PageWithHeader :actions="headerActions">
+		<div class="_spacer" style="--MI_SPACER-w: 900px;">
 			<div :class="$style.container" class="_gaps_s">
 				<div :class="$style.inputs">
 					<MkSelect v-model="status" style="margin: 0; flex: 1;">
@@ -44,24 +43,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</template>
 				</MkPagination>
 			</div>
-		</MkSpacer>
-	</MkStickyContainer>
+		</div>
+	</PageWithHeader>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, shallowRef } from 'vue';
+import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import type { Ref } from 'vue';
 import type * as Misskey from 'misskey-js';
 import MkPagination from '@/components/MkPagination.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { misskeyApi } from '@/scripts/misskey-api';
+import { definePage } from '@/page.js';
+import { misskeyApi } from '@/utility/misskey-api';
 import MkSelect from '@/components/MkSelect.vue';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 
-const avatarDecorationApplicationsPaginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const avatarDecorationApplicationsPaginationComponent = useTemplateRef('avatarDecorationApplicationsPaginationComponent');
 const status : Ref<'all' | Misskey.entities.AvatarDecorationApplication['status']> = ref('all');
 
 const pagination = {
@@ -75,7 +74,7 @@ const pagination = {
 const add = async () => {
 	os.popup(defineAsyncComponent(() => import('@/components/avatar-decoration-application/MkAvatarDecorationApplicationEditorDialog.vue')), {}, {
 		done: result => {
-			avatarDecorationApplicationsPaginationComponent.value?.reload();
+			avatarDecorationApplicationsPaginationComponent.value?.paginator?.reload();
 		},
 	});
 };
@@ -85,7 +84,7 @@ const edit = (avatarDecorationApplication) => {
 		avatarDecorationApplication: avatarDecorationApplication,
 	}, {
 		done: result => {
-			avatarDecorationApplicationsPaginationComponent.value?.reload();
+			avatarDecorationApplicationsPaginationComponent.value?.paginator.reload();
 		},
 	});
 };
@@ -94,7 +93,7 @@ const cancel = async (avatarDecorationApplication) => {
 	await os.confirm({ type: 'warning', title: i18n.tsx._avatarDecorationApplication.confirmCancel({ name: avatarDecorationApplication.name }), okText: i18n.ts.cancel, cancelText: i18n.ts.doNothing }).then(async (dialog) => {
 		if (dialog.canceled) return;
 		await misskeyApi('avatar-decoration-applications/cancel', { avatarDecorationApplicationId: avatarDecorationApplication.id });
-		avatarDecorationApplicationsPaginationComponent.value?.reload();
+		avatarDecorationApplicationsPaginationComponent.value?.paginator.reload();
 	});
 };
 
@@ -107,7 +106,7 @@ const headerActions = computed(() => [
 	}] : []),
 ]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._avatarDecorationApplication._list.title,
 	icon: 'ti ti-triangle-plus-2',
 }));
