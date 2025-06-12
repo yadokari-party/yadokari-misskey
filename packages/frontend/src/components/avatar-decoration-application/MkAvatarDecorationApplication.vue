@@ -25,10 +25,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<div v-if="avatarDecorationApplication.file != null" :class="$style.preview">
 						<div :class="[$style.previewItem, $style.light]">
-							<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decorations="[{url: avatarDecorationApplication.file.url}]" forceShowDecoration/>
+							<MkAvatar style="width: 60px; height: 60px;" :user="$i as Misskey.entities.User" :decorations="[{url: avatarDecorationApplication.file.url}]" forceShowDecoration/>
 						</div>
 						<div :class="[$style.previewItem, $style.dark]">
-							<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decorations="[{url: avatarDecorationApplication.file.url}]" forceShowDecoration/>
+							<MkAvatar style="width: 60px; height: 60px;" :user="$i as Misskey.entities.User" :decorations="[{url: avatarDecorationApplication.file.url}]" forceShowDecoration/>
 						</div>
 					</div>
 				</MkFolder>
@@ -79,15 +79,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineProps, ref, toRefs, watch, defineEmits } from 'vue';
 import type * as Misskey from 'misskey-js';
-import { signinRequired } from '@/account.js';
+import { $i } from '@/i.js';
 import MkFolder from '@/components/MkFolder.vue';
 import { i18n } from '@/i18n.js';
-import { misskeyApi } from '@/scripts/misskey-api';
+import { misskeyApi } from '@/utility/misskey-api';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
-
-const $i = signinRequired();
 
 const props = defineProps<{
 	avatarDecorationApplication: Misskey.entities.AdminAvatarDecorationApplicationsResponse[number];

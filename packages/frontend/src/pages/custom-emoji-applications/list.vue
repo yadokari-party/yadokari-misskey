@@ -5,9 +5,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div>
-	<MkStickyContainer>
-		<template #header><MkPageHeader :actions="headerActions"/></template>
-		<MkSpacer :contentMax="900">
+	<PageWithHeader :actions="headerActions">
+		<div class="_spacer" style="--MI_SPACER-w: 900px;">
 			<div :class="$style.container" class="_gaps_s">
 				<div :class="$style.inputs">
 					<MkSelect v-model="status" style="margin: 0; flex: 1;">
@@ -44,24 +43,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</template>
 				</MkPagination>
 			</div>
-		</MkSpacer>
-	</MkStickyContainer>
+		</div>
+	</PageWithHeader>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, shallowRef } from 'vue';
+import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import type { Ref } from 'vue';
 import type * as Misskey from 'misskey-js';
 import MkPagination from '@/components/MkPagination.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { misskeyApi } from '@/scripts/misskey-api';
+import { definePage } from '@/page.js';
+import { misskeyApi } from '@/utility/misskey-api';
 import MkSelect from '@/components/MkSelect.vue';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 
-const emojiApplicationsPaginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const emojiApplicationsPaginationComponent = useTemplateRef('emojiApplicationsPaginationComponent');
 const status : Ref<'all' | Misskey.entities.EmojiApplication['status']> = ref('all');
 
 const pagination = {
@@ -75,7 +74,7 @@ const pagination = {
 const add = async () => {
 	os.popup(defineAsyncComponent(() => import('@/components/emoji-application/MkEmojiApplicationEditorDialog.vue')), {}, {
 		done: result => {
-			emojiApplicationsPaginationComponent.value?.reload();
+			emojiApplicationsPaginationComponent.value?.paginator.reload();
 		},
 	});
 };
@@ -85,7 +84,7 @@ const edit = (emojiApplication) => {
 		emojiApplication: emojiApplication,
 	}, {
 		done: result => {
-			emojiApplicationsPaginationComponent.value?.reload();
+			emojiApplicationsPaginationComponent.value?.paginator.reload();
 		},
 	});
 };
@@ -93,8 +92,8 @@ const edit = (emojiApplication) => {
 const cancel = async (emojiApplication) => {
 	await os.confirm({ type: 'warning', title: i18n.tsx._emojiApplication.confirmCancel({ name: emojiApplication.name }), okText: i18n.ts.cancel, cancelText: i18n.ts.doNothing }).then(async (dialog) => {
 		if (dialog.canceled) return;
-		await misskeyApi('emoji-application/cancel', { emojiApplicationId: emojiApplication.id });
-		emojiApplicationsPaginationComponent.value?.reload();
+		await misskeyApi('emoji-applications/cancel', { emojiApplicationId: emojiApplication.id });
+		emojiApplicationsPaginationComponent.value?.paginator.reload();
 	});
 };
 
@@ -107,7 +106,7 @@ const headerActions = computed(() => [
 	}] : []),
 ]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._emojiApplication._list.title,
 	icon: 'ti ti-triangle-plus-2',
 }));

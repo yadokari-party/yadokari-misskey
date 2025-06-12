@@ -9,7 +9,7 @@ import type { MenuItem } from '@/types/menu.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 
 function toolsMenuItems(): MenuItem[] {
 	return [{
@@ -27,28 +27,27 @@ function toolsMenuItems(): MenuItem[] {
 		to: '/clicker',
 		text: '🍪👈',
 		icon: 'ti ti-cookie',
-	}, {
+	}, ($i && ($i.isModerator || $i.policies.canCreateCustomEmojiApplications)) ? {
 		type: 'link',
 		to: '/custom-emoji-applications',
 		text: i18n.ts._emojiApplication.title,
 		icon: 'ti ti-triangle-plus-2',
-	}, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
+	} : undefined, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
 		type: 'link',
 		to: '/custom-emojis-manager',
 		text: i18n.ts.manageCustomEmojis,
 		icon: 'ti ti-icons',
-	} : undefined,
-									{
-										type: 'link',
-										to: '/avatar-decoration-applications',
-										text: i18n.ts._avatarDecorationApplication.title,
-										icon: 'ti ti-triangle-plus-2',
-									}, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
-										type: 'link',
-										to: '/avatar-decorations',
-										text: i18n.ts.manageAvatarDecorations,
-										icon: 'ti ti-sparkles',
-									} : undefined];
+	} : undefined, ($i && ($i.isModerator || $i.policies.canCreateAvatarDecorationApplications)) ? {
+		type: 'link',
+		to: '/avatar-decoration-applications',
+		text: i18n.ts._avatarDecorationApplication.title,
+		icon: 'ti ti-triangle-plus-2',
+	} : undefined, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
+		type: 'link',
+		to: '/avatar-decorations',
+		text: i18n.ts.manageAvatarDecorations,
+		icon: 'ti ti-sparkles',
+	} : undefined];
 }
 
 export function openInstanceMenu(ev: MouseEvent) {
@@ -157,8 +156,8 @@ export function openInstanceMenu(ev: MouseEvent) {
 		menuItems.push({
 			text: i18n.ts._initialTutorial.launchTutorial,
 			icon: 'ti ti-presentation',
-			action: () => {
-				const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkTutorialDialog.vue')), {}, {
+			action: async () => {
+				const { dispose } = await os.popupAsyncWithDialog(import('@/components/MkTutorialDialog.vue').then(x => x.default), {}, {
 					closed: () => dispose(),
 				});
 			},
