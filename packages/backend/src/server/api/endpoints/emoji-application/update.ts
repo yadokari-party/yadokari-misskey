@@ -64,6 +64,7 @@ export const paramDef = {
 		license: { type: 'string', nullable: true },
 		isSensitive: { type: 'boolean' },
 		localOnly: { type: 'boolean' },
+		additionalInfo: { type: 'string', nullable: true },
 	},
 	required: ['emojiApplicationId', 'name', 'fileId'],
 } as const;
@@ -102,6 +103,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				license: ps.license ?? null,
 				isSensitive: ps.isSensitive ?? false,
 				localOnly: ps.localOnly ?? false,
+				additionalInfo: ps.additionalInfo ?? null,
 			}, me);
 
 			return this.emojiApplicationEntityService.pack(updated);
