@@ -18901,6 +18901,7 @@ export type operations = {
           license?: string | null;
           isSensitive?: boolean;
           localOnly?: boolean;
+          additionalInfo?: string | null;
         };
       };
     };
