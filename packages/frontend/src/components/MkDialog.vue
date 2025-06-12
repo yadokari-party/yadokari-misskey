@@ -201,15 +201,15 @@ watch(okWaitInitiated, () => {
 });
 
 onMounted(() => {
-	document.addEventListener('keydown', onKeydown);
+	window.document.addEventListener('keydown', onKeydown);
 
 	sec.value = props.okWaitDuration;
 	if (sec.value > 0) {
-		const waitTimer = setInterval(() => {
+		const waitTimer = window.setInterval(() => {
 			if (!okWaitInitiated.value) return;
 
 			if (sec.value < 0) {
-				clearInterval(waitTimer);
+				window.clearInterval(waitTimer);
 			}
 			sec.value = sec.value - 1;
 		}, 1000);
@@ -217,7 +217,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-	document.removeEventListener('keydown', onKeydown);
+	window.document.removeEventListener('keydown', onKeydown);
 });
 </script>
 
