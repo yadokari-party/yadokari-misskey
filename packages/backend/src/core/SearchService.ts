@@ -17,6 +17,7 @@ import { CacheService } from '@/core/CacheService.js';
 import { QueryService } from '@/core/QueryService.js';
 import { IdService } from '@/core/IdService.js';
 import { LoggerService } from '@/core/LoggerService.js';
+import type { Client as ESClient } from '@elastic/elasticsearch';
 import type { Index, MeiliSearch } from 'meilisearch';
 
 type K = string;
@@ -77,7 +78,9 @@ function compileQuery(q: Q): string {
 @Injectable()
 export class SearchService {
 	private readonly meilisearchIndexScope: 'local' | 'global' | string[] = 'local';
+	private readonly elasticsearchIndexScope: 'local' | 'global' | string[] = 'local';
 	private readonly meilisearchNoteIndex: Index | null = null;
+	private readonly elasticsearchNoteIndex: string | null = null;
 	private readonly provider: FulltextSearchProvider;
 
 	constructor(
@@ -86,6 +89,9 @@ export class SearchService {
 
 		@Inject(DI.meilisearch)
 		private meilisearch: MeiliSearch | null,
+
+		@Inject(DI.elasticsearch)
+		private elasticsearch: ESClient | null,
 
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
@@ -126,16 +132,22 @@ export class SearchService {
 		}
 
 		this.provider = config.fulltextSearch?.provider ?? 'sqlLike';
+
+		if (config.elasticsearch?.scope) {
+			this.elasticsearchIndexScope = config.elasticsearch.scope;
+		}
+
 		this.loggerService.getLogger('SearchService').info(`-- Provider: ${this.provider}`);
 	}
 
 	@bindThis
 	public async indexNote(note: MiNote): Promise<void> {
-		if (!this.meilisearch) return;
+		if (this.provider === 'meilisearch' && !this.meilisearch) return;
+		if (this.provider === 'elasticsearch' && !this.elasticsearch) return;
 		if (note.text == null && note.cw == null) return;
 		if (!['home', 'public'].includes(note.visibility)) return;
 
-		switch (this.meilisearchIndexScope) {
+		switch (this.provider === 'meilisearch' ? this.meilisearchIndexScope : this.elasticsearchIndexScope) {
 			case 'global':
 				break;
 
@@ -150,7 +162,7 @@ export class SearchService {
 			}
 		}
 
-		await this.meilisearchNoteIndex?.addDocuments([{
+		const document = {
 			id: note.id,
 			createdAt: this.idService.parse(note.id).date.getTime(),
 			userId: note.userId,
@@ -159,17 +171,40 @@ export class SearchService {
 			cw: note.cw,
 			text: note.text,
 			tags: note.tags,
-		}], {
-			primaryKey: 'id',
-		});
+		};
+
+		if (this.provider === 'meilisearch') {
+			await this.meilisearchNoteIndex?.addDocuments([document], {
+				primaryKey: 'id',
+			});
+		} else if (this.provider === 'elasticsearch') {
+			await this.elasticsearch?.index({
+				index: `${this.config.elasticsearch!.index}-notes`,
+				id: note.id,
+				document,
+			});
+		}
 	}
 
 	@bindThis
 	public async unindexNote(note: MiNote): Promise<void> {
-		if (!this.meilisearch) return;
+		if (this.provider === 'meilisearch' && !this.meilisearch) return;
+		if (this.provider === 'elasticsearch' && (!this.elasticsearch || !this.config.elasticsearch)) return;
 		if (!['home', 'public'].includes(note.visibility)) return;
 
-		await this.meilisearchNoteIndex?.deleteDocument(note.id);
+		try {
+			if (this.provider === 'meilisearch') {
+				await this.meilisearchNoteIndex?.deleteDocument(note.id);
+			} else if (this.provider === 'elasticsearch') {
+				await this.elasticsearch?.delete({
+					index: `${this.config.elasticsearch!.index}-notes`,
+					id: note.id,
+					refresh: true,
+				});
+			}
+		} catch (err) {
+			this.loggerService.getLogger('search').error(`Failed to unindex note ${note.id}`, { err });
+		}
 	}
 
 	@bindThis
@@ -189,9 +224,13 @@ export class SearchService {
 			case 'meilisearch': {
 				return this.searchNoteByMeiliSearch(q, me, opts, pagination);
 			}
+			case 'elasticsearch': {
+				return this.searchNoteByElasticSearch(q, me, opts, pagination);
+			}
 			default: {
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				const typeCheck: never = this.provider;
+				this.loggerService.getLogger('search').warn(`Unknown search provider: ${this.provider}`);
 				return [];
 			}
 		}
@@ -297,6 +336,99 @@ export class SearchService {
 			: [new Set<string>(), new Set<string>()];
 		const notes = (await this.notesRepository.findBy({
 			id: In(res.hits.map(x => x.id)),
+		})).filter(note => {
+			if (me && isUserRelated(note, userIdsWhoBlockingMe)) return false;
+			if (me && isUserRelated(note, userIdsWhoMeMuting)) return false;
+			return true;
+		});
+
+		return notes.sort((a, b) => a.id > b.id ? -1 : 1);
+	}
+
+	@bindThis
+	private async searchNoteByElasticSearch(
+		q: string,
+		me: MiUser | null,
+		opts: SearchOpts,
+		pagination: SearchPagination,
+	): Promise<MiNote[]> {
+		if (!this.elasticsearch || !this.config.elasticsearch) {
+			throw new Error('Elasticsearch is not available');
+		}
+
+		const must: any[] = [
+			{
+				multi_match: {
+					query: q,
+					fields: ['text', 'cw'],
+				},
+			},
+		];
+
+		if (pagination.untilId) {
+			must.push({
+				range: {
+					createdAt: {
+						lt: this.idService.parse(pagination.untilId).date.getTime(),
+					},
+				},
+			});
+		}
+
+		if (pagination.sinceId) {
+			must.push({
+				range: {
+					createdAt: {
+						gt: this.idService.parse(pagination.sinceId).date.getTime(),
+					},
+				},
+			});
+		}
+
+		if (opts.userId) {
+			must.push({ term: { userId: opts.userId } });
+		}
+
+		if (opts.channelId) {
+			must.push({ term: { channelId: opts.channelId } });
+		}
+
+		if (opts.host) {
+			if (opts.host === '.') {
+				must.push({ bool: { must_not: { exists: { field: 'userHost' } } } });
+			} else {
+				must.push({ term: { userHost: opts.host } });
+			}
+		}
+
+		const res = await this.elasticsearch.search({
+			index: `${this.config.elasticsearch.index}-notes`,
+			query: {
+				bool: {
+					must,
+				},
+			},
+			sort: [{ createdAt: 'desc' }],
+			size: pagination.limit,
+			_source: ['id'],
+		});
+
+		if (res.hits.hits.length === 0) {
+			return [];
+		}
+
+		const [
+			userIdsWhoMeMuting,
+			userIdsWhoBlockingMe,
+		] = me
+			? await Promise.all([
+				this.cacheService.userMutingsCache.fetch(me.id),
+				this.cacheService.userBlockedCache.fetch(me.id),
+			])
+			: [new Set<string>(), new Set<string>()];
+
+		const notes = (await this.notesRepository.findBy({
+			id: In(res.hits.hits.map(x => x._id)),
 		})).filter(note => {
 			if (me && isUserRelated(note, userIdsWhoBlockingMe)) return false;
 			if (me && isUserRelated(note, userIdsWhoMeMuting)) return false;

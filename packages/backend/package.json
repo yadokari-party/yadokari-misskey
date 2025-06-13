@@ -73,6 +73,7 @@
 		"@bull-board/fastify": "6.7.7",
 		"@bull-board/ui": "6.7.7",
 		"@discordapp/twemoji": "15.1.0",
+		"@elastic/elasticsearch": "8.18.2",
 		"@fastify/accepts": "5.0.2",
 		"@fastify/cookie": "11.0.2",
 		"@fastify/cors": "10.0.2",

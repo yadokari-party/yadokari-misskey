@@ -228,6 +228,19 @@ fulltextSearch:
 #  index: ''
 #  scope: local
 
+# For Elasticsearch settings.
+# If you select "elasticsearch" for "fulltextSearch.provider", it must be set.
+# You can set scope to local (default value) or global
+# (include notes from remote).
+
+# elasticsearch:
+#   host: elasticsearch
+#   port: 9200
+#   username: hoge
+#   password: hoge
+#   index: ''
+#   scope: local
+
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
 
