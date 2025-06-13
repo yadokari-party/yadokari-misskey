@@ -4,35 +4,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkLoading v-if="loading"></MkLoading>
-<div v-else style="display: flex; flex-direction: column; min-height: 100%;">
-	<MkSpacer :marginMin="20" :marginMax="28" style="flex-grow: 1;">
-		<div class="_gaps_m">
-			<div :class="$style.preview">
-				<div :class="[$style.previewItem, $style.light]">
-					<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decorations="file?.url != null ? [{url: file.url}] : []" forceShowDecoration/>
+<div class="_spacer" style="--MI_SPACER-w: 800px;">
+	<MkLoading v-if="loading"></MkLoading>
+	<div v-else style="display: flex; flex-direction: column; min-height: 100%;">
+		<MkSpacer :marginMin="20" :marginMax="28" style="flex-grow: 1;">
+			<div class="_gaps_m">
+				<div :class="$style.preview">
+					<div :class="[$style.previewItem, $style.light]">
+						<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decorations="file?.url != null ? [{url: file.url}] : []" forceShowDecoration/>
+					</div>
+					<div :class="[$style.previewItem, $style.dark]">
+						<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decorations="file?.url != null ? [{url: file.url}] : []" forceShowDecoration/>
+					</div>
 				</div>
-				<div :class="[$style.previewItem, $style.dark]">
-					<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decorations="file?.url != null ? [{url: file.url}] : []" forceShowDecoration/>
-				</div>
+				<MkButton rounded style="margin: 0 auto;" @click="changeImage">{{ i18n.ts.selectFile }}</MkButton>
+				<MkInput v-model="name">
+					<template #label>{{ i18n.ts.name }}</template>
+				</MkInput>
+				<MkTextarea v-model="description">
+					<template #label>{{ i18n.ts.description }}</template>
+				</MkTextarea>
+				<MkInfo>{{ i18n.ts._avatarDecorationApplication.additionalInfoDescription }}</MkInfo>
+				<MkTextarea v-model="additionalInfo" :mfmAutocomplete="true">
+					<template #label>{{ i18n.ts._avatarDecorationApplication.additionalInfo }}</template>
+				</MkTextarea>
 			</div>
-			<MkButton rounded style="margin: 0 auto;" @click="changeImage">{{ i18n.ts.selectFile }}</MkButton>
-			<MkInput v-model="name">
-				<template #label>{{ i18n.ts.name }}</template>
-			</MkInput>
-			<MkTextarea v-model="description">
-				<template #label>{{ i18n.ts.description }}</template>
-			</MkTextarea>
-			<MkInfo>{{ i18n.ts._avatarDecorationApplication.additionalInfoDescription }}</MkInfo>
-			<MkTextarea v-model="additionalInfo" :mfmAutocomplete="true">
-				<template #label>{{ i18n.ts._avatarDecorationApplication.additionalInfo }}</template>
-			</MkTextarea>
+		</MkSpacer>
+		<div v-if="status === 'pending'" :class="$style.footer">
+			<MkButton primary rounded style="margin: 0 auto;" @click="done">
+				<i class="ti ti-check"></i> {{ props.avatarDecorationApplication || props.avatarDecorationApplicationId ? i18n.ts.update : i18n.ts.create }}
+			</MkButton>
 		</div>
-	</MkSpacer>
-	<div v-if="status === 'pending'" :class="$style.footer">
-		<MkButton primary rounded style="margin: 0 auto;" @click="done">
-			<i class="ti ti-check"></i> {{ props.avatarDecorationApplication || props.avatarDecorationApplicationId ? i18n.ts.update : i18n.ts.create }}
-		</MkButton>
 	</div>
 </div>
 </template>
@@ -44,13 +46,11 @@ import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import MkTextarea from '@/components/MkTextarea.vue';
-import { signinRequired } from '@/account.js';
-import { selectFile } from '@/scripts/select-file.js';
-
-const $i = signinRequired();
+import { $i } from '@/i.js';
+import { selectFile } from '@/utility/drive.js';
 
 const props = defineProps<{
 	avatarDecorationApplicationId?: string,
@@ -123,7 +123,7 @@ async function done() {
 onMounted(() => {
 	if (props.avatarDecorationApplicationId != null && props.avatarDecorationApplication == null) {
 		(async () => {
-			const avatarDecorationApplication = await misskeyApi('avatar-decoration-application/show', {
+			const avatarDecorationApplication = await misskeyApi('avatar-decoration-applications/show', {
 				id: props.avatarDecorationApplicationId,
 			}) as unknown as Misskey.entities.AvatarDecorationApplication;
 			console.log(avatarDecorationApplication);

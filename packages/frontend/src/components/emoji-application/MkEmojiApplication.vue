@@ -101,7 +101,7 @@ import { defineProps, ref, toRefs, watch, defineEmits } from 'vue';
 import type * as Misskey from 'misskey-js';
 import MkFolder from '@/components/MkFolder.vue';
 import { i18n } from '@/i18n.js';
-import { misskeyApi } from '@/scripts/misskey-api';
+import { misskeyApi } from '@/utility/misskey-api';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';

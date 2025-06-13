@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkSpacer :contentMax="800">
+<div class="_spacer" style="--MI_SPACER-w: 800px;">
 	<MkLoading v-if="loading"></MkLoading>
 	<div v-else style="display: flex; flex-direction: column; min-height: 100%;">
 		<MkSpacer :marginMin="20" :marginMax="28" style="flex-grow: 1;">
@@ -54,7 +54,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkButton>
 		</div>
 	</div>
-</MkSpacer>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -67,9 +67,9 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { customEmojiCategories } from '@/custom-emojis.js';
 import MkSwitch from '@/components/MkSwitch.vue';
-import { selectFile } from '@/scripts/select-file.js';
+import { selectFile } from '@/utility/drive.js';
 import MkTextarea from '@/components/MkTextarea.vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import MkInfo from '@/components/MkInfo.vue';
 
 const props = defineProps<{

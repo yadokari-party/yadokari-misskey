@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import * as Misskey from 'misskey-js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkEmojiApplicationEditor from '@/components/emoji-application/MkEmojiApplicationEditor.vue';
 import { i18n } from '@/i18n.js';
 
@@ -24,7 +24,7 @@ defineProps<{
 	emojiApplication?: Misskey.entities.EmojiApplication,
 }>();
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._emojiApplication.title,
 	icon: 'ti ti-triangle-plus-2',
 }));
