@@ -67,7 +67,10 @@ type Source = {
 		username: string;
 		password: string;
 		index: string;
+		ssl?: boolean;
 		scope?: 'local' | 'global' | string[];
+		pingTimeout?: number;
+		requestTimeout?: number;
 	};
 	sentryForBackend?: { options: Partial<Sentry.NodeOptions>; enableNodeProfiling: boolean; };
 	sentryForFrontend?: { options: Partial<Sentry.NodeOptions> };
@@ -160,7 +163,10 @@ export type Config = {
 		username: string;
 		password: string;
 		index: string;
+		ssl?: boolean;
 		scope?: 'local' | 'global' | string[];
+		pingTimeout?: number;
+		requestTimeout?: number;
 	} | undefined;
 	proxy: string | undefined;
 	proxySmtp: string | undefined;

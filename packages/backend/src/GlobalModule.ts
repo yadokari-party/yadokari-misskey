@@ -58,11 +58,13 @@ const $elasticsearch: Provider = {
 				throw new Error('Elasticsearch is enabled but no configuration is provided');
 			}
 			return new Client({
-				node: `http://${config.elasticsearch.host}:${config.elasticsearch.port}`,
+				node: `${config.elasticsearch.ssl ? 'https' : 'http'}://${config.elasticsearch.host}:${config.elasticsearch.port}`,
 				auth: {
 					username: config.elasticsearch.username,
 					password: config.elasticsearch.password,
 				},
+				pingTimeout: config.elasticsearch.pingTimeout ?? 3000,
+				requestTimeout: config.elasticsearch.requestTimeout ?? 30000,
 			});
 		} else {
 			return null;

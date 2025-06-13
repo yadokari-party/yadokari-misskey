@@ -238,8 +238,11 @@ fulltextSearch:
 #   port: 9200
 #   username: hoge
 #   password: hoge
-#   index: ''
+#   ssl: true
+#   index: 'example'
 #   scope: local
+#   pingTimeout: 3000
+#   requestTimeout: 30000
 
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
