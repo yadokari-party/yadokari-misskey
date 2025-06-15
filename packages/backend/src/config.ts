@@ -62,6 +62,17 @@ type Source = {
 		index: string;
 		scope?: 'local' | 'global' | string[];
 	};
+	elasticsearch?: {
+		host: string;
+		port: string;
+		username: string;
+		password: string;
+		index: string;
+		ssl?: boolean;
+		scope?: 'local' | 'global' | string[];
+		pingTimeout?: number;
+		requestTimeout?: number;
+	};
 	sentryForBackend?: { options: Partial<Sentry.NodeOptions>; enableNodeProfiling: boolean; };
 	sentryForFrontend?: {
 		options: Partial<SentryVue.BrowserOptions> & { dsn: string };
@@ -148,6 +159,17 @@ export type Config = {
 		index: string;
 		scope?: 'local' | 'global' | string[];
 	} | undefined;
+	elasticsearch: {
+		host: string;
+		port: string;
+		username: string;
+		password: string;
+		index: string;
+		ssl?: boolean;
+		scope?: 'local' | 'global' | string[];
+		pingTimeout?: number;
+		requestTimeout?: number;
+	} | undefined;
 	proxy: string | undefined;
 	proxySmtp: string | undefined;
 	proxyBypassHosts: string[] | undefined;
@@ -209,7 +231,7 @@ export type Config = {
 	pidFile: string;
 };
 
-export type FulltextSearchProvider = 'sqlLike' | 'sqlPgroonga' | 'meilisearch';
+export type FulltextSearchProvider = 'sqlLike' | 'sqlPgroonga' | 'meilisearch' | 'elasticsearch';
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -281,6 +303,7 @@ export function loadConfig(): Config {
 		dbSlaves: config.dbSlaves,
 		fulltextSearch: config.fulltextSearch,
 		meilisearch: config.meilisearch,
+		elasticsearch: config.elasticsearch,
 		redis,
 		redisForPubsub: config.redisForPubsub ? convertRedisOptions(config.redisForPubsub, host) : redis,
 		redisForJobQueue: config.redisForJobQueue ? convertRedisOptions(config.redisForJobQueue, host) : redis,

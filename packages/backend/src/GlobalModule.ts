@@ -7,6 +7,7 @@ import { Global, Inject, Module } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { DataSource } from 'typeorm';
 import { MeiliSearch } from 'meilisearch';
+import { Client } from '@elastic/elasticsearch';
 import { MiMeta } from '@/models/Meta.js';
 import { DI } from './di-symbols.js';
 import { Config, loadConfig } from './config.js';
@@ -46,6 +47,29 @@ const $meilisearch: Provider = {
 			return new MeiliSearch({
 				host: `${config.meilisearch.ssl ? 'https' : 'http'}://${config.meilisearch.host}:${config.meilisearch.port}`,
 				apiKey: config.meilisearch.apiKey,
+			});
+		} else {
+			return null;
+		}
+	},
+	inject: [DI.config],
+};
+
+const $elasticsearch: Provider = {
+	provide: DI.elasticsearch,
+	useFactory: (config: Config) => {
+		if (config.fulltextSearch?.provider === 'elasticsearch') {
+			if (!config.elasticsearch) {
+				throw new Error('Elasticsearch is enabled but no configuration is provided');
+			}
+			return new Client({
+				node: `${config.elasticsearch.ssl ? 'https' : 'http'}://${config.elasticsearch.host}:${config.elasticsearch.port}`,
+				auth: {
+					username: config.elasticsearch.username,
+					password: config.elasticsearch.password,
+				},
+				pingTimeout: config.elasticsearch.pingTimeout ?? 3000,
+				requestTimeout: config.elasticsearch.requestTimeout ?? 30000,
 			});
 		} else {
 			return null;
@@ -157,8 +181,8 @@ const $meta: Provider = {
 @Global()
 @Module({
 	imports: [RepositoryModule],
-	providers: [$config, $db, $meta, $meilisearch, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForReactions],
-	exports: [$config, $db, $meta, $meilisearch, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForReactions, RepositoryModule],
+	providers: [$config, $db, $meta, $meilisearch, $elasticsearch, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForReactions],
+	exports: [$config, $db, $meta, $meilisearch, $elasticsearch, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForReactions, RepositoryModule],
 })
 export class GlobalModule implements OnApplicationShutdown {
 	constructor(
@@ -168,6 +192,7 @@ export class GlobalModule implements OnApplicationShutdown {
 		@Inject(DI.redisForSub) private redisForSub: Redis.Redis,
 		@Inject(DI.redisForTimelines) private redisForTimelines: Redis.Redis,
 		@Inject(DI.redisForReactions) private redisForReactions: Redis.Redis,
+		@Inject(DI.elasticsearch) private elasticsearch: Client | null,
 	) { }
 
 	public async dispose(): Promise<void> {
@@ -181,6 +206,7 @@ export class GlobalModule implements OnApplicationShutdown {
 			this.redisForSub.disconnect(),
 			this.redisForTimelines.disconnect(),
 			this.redisForReactions.disconnect(),
+			this.elasticsearch?.close(),
 		]);
 	}
 
