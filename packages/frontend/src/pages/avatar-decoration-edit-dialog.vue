@@ -26,6 +26,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decorations="url != '' ? [{ url }] : []" forceShowDecoration/>
 					</div>
 				</div>
+				<MkButton rounded style="margin: 0 auto;" @click="selectImage($event)">
+					{{ i18n.ts.selectFile }}
+				</MkButton>
 				<MkInput v-model="name">
 					<template #label>{{ i18n.ts.name }}</template>
 				</MkInput>
@@ -74,6 +77,7 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import { ensureSignin } from '@/i.js';
+import { selectFile } from '@/utility/drive';
 
 const $i = ensureSignin();
 
@@ -96,6 +100,12 @@ const rolesThatCanBeUsedThisDecoration = ref<Misskey.entities.Role[]>([]);
 watch(roleIdsThatCanBeUsedThisDecoration, async () => {
 	rolesThatCanBeUsedThisDecoration.value = (await Promise.all(roleIdsThatCanBeUsedThisDecoration.value.map((id) => misskeyApi('admin/roles/show', { roleId: id }).catch(() => null)))).filter(x => x != null);
 }, { immediate: true });
+
+async function selectImage(ev) {
+	const file = await selectFile(ev.currentTarget ?? ev.target, null);
+	name.value = file.name.replace(/\.(.+)$/, '');
+	url.value = file.url;
+}
 
 async function addRole() {
 	const roles = await misskeyApi('admin/roles/list');
