@@ -41,6 +41,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</div>
 						</MkFolder>
 					</SearchMarker>
+					<SearchMarker :label="i18n.ts.notifications">
+						<MkFolder>
+							<template #icon><i class="ti ti-bell"></i></template>
+							<template #label>
+								{{ i18n.ts.notifications }}
+							</template>
+							<template v-if="appearanceSettingsForm.modified.value" #footer>
+								<MkFormFooter :form="appearanceSettingsForm"/>
+							</template>
+
+							<div class="_gaps_m">
+								<SearchMarker :label="i18n.ts._settings._originalFeature.displayFollowback">
+									<MkPreferenceContainer k="displayFollowback">
+										<MkSwitch v-model="appearanceSettingsForm.state.displayFollowback">
+											<template #label>{{ i18n.ts._settings._originalFeature.displayFollowback }}</template>
+										</MkSwitch>
+									</MkPreferenceContainer>
+								</SearchMarker>
+							</div>
+						</MkFolder>
+					</SearchMarker>
 				</div>
 			</FormSection>
 		</SearchMarker>
@@ -62,11 +83,14 @@ import { fontList } from '@/utility/font';
 import MkFeatureBanner from '@/components/MkFeatureBanner.vue';
 import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
 import { useForm } from '@/composables/use-form';
+import MkSwitch from '@/components/MkSwitch.vue';
 
 const appearanceSettingsForm = useForm({
 	customFont: prefer.s.customFont,
+	displayFollowback: prefer.s.displayFollowback,
 }, async (state) => {
 	prefer.commit('customFont', state.customFont);
+	prefer.commit('displayFollowback', state.displayFollowback);
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
