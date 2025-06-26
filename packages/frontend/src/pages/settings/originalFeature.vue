@@ -23,8 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkFolder>
 							<template #icon><i class="ti ti-typography"></i></template>
 							<template #label>
-								{{ i18n.ts.customFont }}<span class="_beta">{{ i18n.ts.originalFeature
-								}}</span>
+								{{ i18n.ts.customFont }}
 							</template>
 							<template v-if="appearanceSettingsForm.modified.value" #footer>
 								<MkFormFooter :form="appearanceSettingsForm"/>
