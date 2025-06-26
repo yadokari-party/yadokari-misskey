@@ -1462,6 +1462,9 @@ _settings:
     showSenderName: "送信者の名前を表示"
     sendOnEnter: "Enterで送信"
 
+  _originalFeature:
+    displayFollowback: "フォローされた際、フォローボタンを表示"
+
 _preferencesProfile:
   profileName: "プロファイル名"
   profileNameDescription: "このデバイスを識別する名前を設定してください。"

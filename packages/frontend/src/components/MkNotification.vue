@@ -120,6 +120,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkA>
 			<template v-else-if="notification.type === 'follow'">
 				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.youGotNewFollower }}</span>
+				<div v-if="displayFollowback" :class="$style.followedCommands">
+					<MkFollowButton v-if="$i?.id != notification.user.id" v-model:user="notification.user as Misskey.entities.UserDetailed" :full="true"/>
+				</div>
 			</template>
 			<template v-else-if="notification.type === 'followRequestAccepted'">
 				<div :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.followRequestAccepted }}</div>
@@ -175,6 +178,8 @@ import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { ensureSignin } from '@/i.js';
+import MkFollowButton from '@/components/MkFollowButton.vue';
+import { prefer } from '@/preferences';
 
 const $i = ensureSignin();
 
@@ -219,6 +224,8 @@ function getActualReactedUsersCount(notification: Misskey.entities.Notification)
 	if (notification.type !== 'reaction:grouped') return 0;
 	return new Set(notification.reactions.map((reaction) => reaction.user.id)).size;
 }
+
+const displayFollowback = prefer.s.displayFollowback;
 </script>
 
 <style lang="scss" module>
@@ -415,6 +422,11 @@ function getActualReactedUsersCount(notification: Misskey.entities.Notification)
 
 .quote:last-child {
 	margin-left: 4px;
+}
+
+.followedCommands {
+	max-width: 300px;
+	margin-top: 8px;
 }
 
 .followRequestCommands {
