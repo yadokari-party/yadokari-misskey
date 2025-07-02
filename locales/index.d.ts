@@ -5839,6 +5839,12 @@ export interface Locale extends ILocale {
              */
             "sendOnEnter": string;
         };
+        "_originalFeature": {
+            /**
+             * フォローされた際、フォローボタンを表示
+             */
+            "displayFollowback": string;
+        };
     };
     "_preferencesProfile": {
         /**

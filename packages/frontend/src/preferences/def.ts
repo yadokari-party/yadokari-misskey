@@ -396,6 +396,9 @@ export const PREF_DEF = definePreferences({
 	customFont: {
 		default: null as string | null,
 	},
+	displayFollowback: {
+		default: true,
+	},
 
 	'sound.masterVolume': {
 		default: 0.5,
