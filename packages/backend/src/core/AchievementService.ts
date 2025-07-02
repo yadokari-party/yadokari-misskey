@@ -117,10 +117,11 @@ export class AchievementService {
 	public async create(
 		userId: MiUser['id'],
 		type: typeof ACHIEVEMENT_TYPES[number],
+		bypassVerification = true,
 	): Promise<void> {
 		if (!ACHIEVEMENT_TYPES.includes(type)) return;
 
-		if (this.isVerifiable(type)) {
+		if (!bypassVerification || this.isVerifiable(type)) {
 			const verified = await this.verify(userId, type);
 			if (!verified) {
 				// Grant cheater achievement
