@@ -61,15 +61,15 @@ import { ACHIEVEMENT_TYPES, ACHIEVEMENT_BADGES, claimAchievement } from '@/utili
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.User;
-	withLocked: boolean;
-	withDescription: boolean;
+	withLocked?: boolean;
+	withDescription?: boolean;
 }>(), {
 	withLocked: true,
 	withDescription: true,
 });
 
 const achievements = ref<Misskey.entities.UsersAchievementsResponse | null>(null);
-const lockedAchievements = computed(() => ACHIEVEMENT_TYPES.filter(x => !(achievements.value ?? []).some(a => a.name === x)));
+const lockedAchievements = computed(() => ACHIEVEMENT_TYPES.filter(x => x !== 'cheater' && !(achievements.value ?? []).some(a => a.name === x)));
 
 function fetch() {
 	misskeyApi('users/achievements', { userId: props.user.id }).then(res => {

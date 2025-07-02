@@ -7473,6 +7473,20 @@ export interface Locale extends ILocale {
                  */
                 "flavor": string;
             };
+            "_cheater": {
+                /**
+                 * ズルはよくない
+                 */
+                "title": string;
+                /**
+                 * この実績は通常得られないはずの方法によって得られました。
+                 */
+                "description": string;
+                /**
+                 * ズルして手に入れた実績は、なんだか後味が悪いかもね
+                 */
+                "flavor": string;
+            };
         };
     };
     "_role": {
