@@ -8,3 +8,4 @@
  - ノート検索のElasticSearchに対応
  - アイコンデコレーション管理画面でドライブファイルを選択可能に
  - アイコンデコレーションを登録したユーザーがアカウントを消去しても継続して使用ができるように
+ - 称号解除に検証を追加 https://github.com/yadokari-party/yadokari-misskey/pull/22
