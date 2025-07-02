@@ -9,7 +9,10 @@
 ### Server
 -->
 
-## yadokari 
+## yadokari next
+ - 称号解除に検証を追加 https://github.com/yadokari-party/yadokari-misskey/pull/22
+
+## yadokari 1.1.0
  - ElasticSearchに対応
 
 ## yadokari 1.0.0

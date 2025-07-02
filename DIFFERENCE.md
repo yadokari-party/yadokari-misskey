@@ -6,3 +6,4 @@
  - カスタムフォント機能の追加 https://github.com/yadokari-party/yadokari-misskey/pull/1
  - バックアップコードを保存するように促すダイアログを表示するように https://github.com/yadokari-party/yadokari-misskey/pull/2
  - ノート検索のElasticSearchに対応
+ - 称号解除に検証を追加 https://github.com/yadokari-party/yadokari-misskey/pull/22
