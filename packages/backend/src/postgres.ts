@@ -89,6 +89,7 @@ import { MiReversiGame } from '@/models/ReversiGame.js';
 import { MiChatApproval } from '@/models/ChatApproval.js';
 import { MiSystemAccount } from '@/models/SystemAccount.js';
 import { MiAvatarDecorationApplication } from '@/models/AvatarDecorationApplication.js';
+import { MiUserCreation } from '@/models/UserCreation.js';
 
 pg.types.setTypeParser(20, Number);
 
@@ -196,6 +197,7 @@ export const entities = [
 	MiAuthSession,
 	MiAccessToken,
 	MiUser,
+	MiUserCreation,
 	MiUserProfile,
 	MiUserKeypair,
 	MiUserPublickey,

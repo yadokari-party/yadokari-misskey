@@ -38,6 +38,7 @@ export const DI = {
 	userListMembershipsRepository: Symbol('userListMembershipsRepository'),
 	userNotePiningsRepository: Symbol('userNotePiningsRepository'),
 	userIpsRepository: Symbol('userIpsRepository'),
+	userCreationsRepository: Symbol('userCreationsRepository'),
 	usedUsernamesRepository: Symbol('usedUsernamesRepository'),
 	followingsRepository: Symbol('followingsRepository'),
 	followRequestsRepository: Symbol('followRequestsRepository'),

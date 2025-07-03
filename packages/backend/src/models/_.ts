@@ -81,6 +81,7 @@ import { MiSystemAccount } from '@/models/SystemAccount.js';
 import { MiSystemWebhook } from '@/models/SystemWebhook.js';
 import { MiUsedUsername } from '@/models/UsedUsername.js';
 import { MiUser } from '@/models/User.js';
+import { MiUserCreation } from '@/models/UserCreation.js';
 import { MiUserIp } from '@/models/UserIp.js';
 import { MiUserKeypair } from '@/models/UserKeypair.js';
 import { MiUserList } from '@/models/UserList.js';
@@ -210,6 +211,7 @@ export {
 	MiSystemAccount,
 	MiUsedUsername,
 	MiUser,
+	MiUserCreation,
 	MiUserIp,
 	MiUserKeypair,
 	MiUserList,
@@ -316,3 +318,4 @@ export type ChatRoomInvitationsRepository = Repository<MiChatRoomInvitation> & M
 export type ChatApprovalsRepository = Repository<MiChatApproval> & MiRepository<MiChatApproval>;
 export type BubbleGameRecordsRepository = Repository<MiBubbleGameRecord> & MiRepository<MiBubbleGameRecord>;
 export type ReversiGamesRepository = Repository<MiReversiGame> & MiRepository<MiReversiGame>;
+export type UserCreationsRepository = Repository<MiUserCreation> & MiRepository<MiUserCreation>;
