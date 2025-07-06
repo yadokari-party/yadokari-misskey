@@ -64,12 +64,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</FormSection>
 		</SearchMarker>
+		<MkButton @click="onWelcomeCardClick">{{ i18n.ts._yadokari._welecomeCard.title }}</MkButton>
 	</div>
 </SearchMarker>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import FormSection from '@/components/form/section.vue';
@@ -83,6 +84,8 @@ import MkFeatureBanner from '@/components/MkFeatureBanner.vue';
 import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
 import { useForm } from '@/composables/use-form';
 import MkSwitch from '@/components/MkSwitch.vue';
+import MkButton from '@/components/MkButton.vue';
+import * as os from '@/os.js';
 
 const appearanceSettingsForm = useForm({
 	customFont: prefer.s.customFont,
@@ -95,6 +98,17 @@ const appearanceSettingsForm = useForm({
 
 const headerActions = computed(() => []);
 const headerTabs = computed(() => []);
+
+function onWelcomeCardClick() {
+	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/YkWelcomeCardGenerator.vue')), {}, {
+		completed: () => {
+
+		},
+		closed: () => {
+			dispose();
+		},
+	});
+}
 
 definePage(() => ({
 	title: 'original-features',
