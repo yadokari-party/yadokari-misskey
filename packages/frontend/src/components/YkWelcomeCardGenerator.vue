@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: pyomu and team-yadokari
+SPDX-FileCopyrightText: 3-x-3 and team-yadokari
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 <template>
