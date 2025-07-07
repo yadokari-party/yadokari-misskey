@@ -12379,6 +12379,58 @@ export interface Locale extends ILocale {
          */
         "confirmReject": ParameterizedString<"name">;
     };
+    "_yadokari": {
+        "_welecomeCard": {
+            /**
+             * やどかりぱーてぃ！への招待状
+             */
+            "title": string;
+            /**
+             * 名前にカスタム絵文字が利用されていたり、長すぎる場合にここで上書きできます。
+             */
+            "editNameDescription": string;
+            /**
+             * プレビューに反映
+             */
+            "applyToPreview": string;
+            /**
+             * 画像をシェア→
+             */
+            "shareImage": string;
+            /**
+             * 招待状の生成に失敗しました。何度もこのエラーが発生する場合は、サーバー管理者にお問い合わせください。
+             */
+            "generationFailed": string;
+            /**
+             * やどかりぱーてぃ！への招待状が完成しました！
+             */
+            "cardGenerated": string;
+            /**
+             * この招待状をダウンロードして、やどかりぱーてぃ！に参加したことをシェアしましょう！
+             */
+            "cardGeneratedDescription": string;
+            /**
+             * 他のMisskeyにシェア
+             */
+            "shareToOtherMisskey": string;
+            /**
+             * Xにポスト
+             */
+            "postToX": string;
+            /**
+             * 技術的制約により、Xおよび他のMisskeyにシェアする際は一旦ダウンロードし、添付する必要があります。
+             */
+            "shareWarning": string;
+            /**
+             * 「 #やどかりぱーてぃ！ 」をはじめました！登録して楽しもう！フォローしてね！ #やどかりぱーてぃ！への招待状
+             */
+            "shareText": string;
+            /**
+             * 「 #やどかりぱーてぃ 」をはじめました！登録して楽しもう！フォローしてね！ #やどかりぱーてぃへの招待状
+             */
+            "shareTextX": string;
+        };
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

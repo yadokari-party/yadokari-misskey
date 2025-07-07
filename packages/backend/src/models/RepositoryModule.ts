@@ -67,6 +67,7 @@ import {
 	MiSystemWebhook,
 	MiUsedUsername,
 	MiUser,
+	MiUserCreation,
 	MiUserIp,
 	MiUserKeypair,
 	MiUserList,
@@ -157,6 +158,12 @@ const $pollsRepository: Provider = {
 const $pollVotesRepository: Provider = {
 	provide: DI.pollVotesRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiPollVote).extend(miRepository as MiRepository<MiPollVote>),
+	inject: [DI.db],
+};
+
+const $userCreationsRepository: Provider = {
+	provide: DI.userCreationsRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiUserCreation).extend(miRepository as MiRepository<MiUserCreation>),
 	inject: [DI.db],
 };
 
@@ -559,6 +566,7 @@ const $reversiGamesRepository: Provider = {
 		$noteReactionsRepository,
 		$pollsRepository,
 		$pollVotesRepository,
+		$userCreationsRepository,
 		$userProfilesRepository,
 		$userKeypairsRepository,
 		$userPendingsRepository,
@@ -637,6 +645,7 @@ const $reversiGamesRepository: Provider = {
 		$noteReactionsRepository,
 		$pollsRepository,
 		$pollVotesRepository,
+		$userCreationsRepository,
 		$userProfilesRepository,
 		$userKeypairsRepository,
 		$userPendingsRepository,

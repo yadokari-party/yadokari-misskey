@@ -22,6 +22,7 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { UserService } from '@/core/UserService.js';
 import { SystemAccountService } from '@/core/SystemAccountService.js';
 import { MetaService } from '@/core/MetaService.js';
+import { MiUserCreation } from '@/models/UserCreation.js';
 
 @Injectable()
 export class SignupService {
@@ -147,6 +148,8 @@ export class SignupService {
 				createdAt: new Date(),
 				username: username.toLowerCase(),
 			}));
+
+			await transactionalEntityManager.save(new MiUserCreation({ userId: account.id }));
 		});
 
 		this.usersChart.update(account, true);
