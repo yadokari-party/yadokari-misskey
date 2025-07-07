@@ -1,3 +1,7 @@
+<!--
+SPDX-FileCopyrightText: pyomu and team-yadokari
+SPDX-License-Identifier: AGPL-3.0-only
+-->
 <template>
 <MkModalWindow
 	ref="dialogEl"
