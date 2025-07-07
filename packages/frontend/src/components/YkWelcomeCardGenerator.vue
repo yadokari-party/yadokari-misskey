@@ -130,8 +130,7 @@ onMounted(async () => {
 		console.error('Failed to initialize card generator:', error);
 		os.alert({
 			title: i18n.ts.error,
-			// i18n: _yadokari._welecomeCard.initializationFailed
-			text: i18n.ts._yadokari._welecomeCard.initializationFailed ?? 'Failed to load user data.',
+			text: i18n.ts._yadokari._welecomeCard.generationFailed,
 			type: 'error',
 		});
 		cancel(); // Close dialog on initialization failure
