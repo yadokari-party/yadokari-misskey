@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
 
 import { Entity, Column, OneToOne, JoinColumn, PrimaryColumn } from 'typeorm';
 import { MiUser } from './User.js';
