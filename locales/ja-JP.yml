@@ -3325,6 +3325,8 @@ _yadokari:
     editNameDescription: "名前にカスタム絵文字が利用されていたり、長すぎる場合にここで上書きできます。"
     applyToPreview: "プレビューに反映"
     shareImage: "画像をシェア→"
+    generationFailed: "招待状の生成に失敗しました。何度もこのエラーが発生する場合は、サーバー管理者にお問い合わせください。"
+    uploadAndNoteFailed: "招待状のノート作成に失敗しました。何度もこのエラーが発生する場合は、サーバー管理者にお問い合わせください。"
     cardGenerated: "やどかりぱーてぃ！への招待状が完成しました！"
     cardGeneratedDescription: "この招待状をダウンロードして、やどかりぱーてぃ！に参加したことをシェアしましょう！"
     shareToOtherMisskey: "他のMisskeyにシェア"

@@ -12398,6 +12398,10 @@ export interface Locale extends ILocale {
              */
             "shareImage": string;
             /**
+             * 招待状の生成に失敗しました。何度もこのエラーが発生する場合は、サーバー管理者にお問い合わせください。
+             */
+            "generationFailed": string;
+            /**
              * やどかりぱーてぃ！への招待状が完成しました！
              */
             "cardGenerated": string;

@@ -58,8 +58,8 @@
 				</div>
 				<div :class="$style.shareTitle">{{ i18n.ts._yadokari._welecomeCard.cardGenerated }}</div>
 				<div :class="$style.shareDescription">{{ i18n.ts._yadokari._welecomeCard.cardGeneratedDescription }}</div>
-				<div :class="$style.generatedImage">
-					<img v-if="generatedImage" :src="generatedImage" alt="Generated Card"/>
+				<div v-if="generatedImage" :class="$style.generatedImage">
+					<img :src="generatedImage.url" alt="Generated Card"/>
 				</div>
 				<div :class="$style.buttons">
 					<MkButton rounded @click="postNote"><i class="ti ti-pencil"></i> {{ i18n.ts.note }}</MkButton>
@@ -84,7 +84,7 @@
 </MkModalWindow>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, useTemplateRef, watchEffect } from 'vue';
+import { ref, onMounted, onUnmounted, useTemplateRef, watch } from 'vue';
 import { apiUrl } from '@@/js/config.js';
 import { ensureSignin } from '@/i.js';
 import { i18n } from '@/i18n.js';
@@ -107,7 +107,7 @@ const dialogEl = useTemplateRef('dialogEl');
 
 const step = ref<'creation' | 'share'>('creation');
 const editableName = ref($i.name ?? $i.username);
-const generatedImage = ref<string | null>(null);
+const generatedImage = ref<{ blob: Blob, url: string } | null>(null);
 const canvasEl = useTemplateRef<HTMLCanvasElement>('canvasEl');
 const canvasGenerating = ref(true);
 
@@ -116,12 +116,26 @@ const shareTextX = `${i18n.ts._yadokari._welecomeCard.shareTextX}\n${window.loca
 
 const userCreationCount = ref(0);
 
-onMounted(() => {
-	misskeyApi('i/creation-number').then((res) => {
+onMounted(async () => {
+	try {
+		const res = await misskeyApi('i/creation-number');
 		userCreationCount.value = res.order;
-	}).then(() => {
-		if (step.value === 'creation') {
-			drawCard();
+		// 初回描画
+		await drawCard();
+	} catch (error) {
+		console.error('Failed to initialize card generator:', error);
+		os.alert({
+			title: i18n.ts.error,
+			// i18n: _yadokari._welecomeCard.initializationFailed
+			text: i18n.ts._yadokari._welecomeCard.initializationFailed ?? 'Failed to load user data.',
+			type: 'error',
+		});
+		cancel(); // Close dialog on initialization failure
+	}
+
+	onUnmounted(() => {
+		if (generatedImage.value) {
+			URL.revokeObjectURL(generatedImage.value.url);
 		}
 	});
 });
@@ -136,6 +150,93 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 	});
 }
 
+const CARD_CONFIG = {
+	width: 1188,
+	height: 700,
+	fontUrl: 'https://media.yadokari.party/assets/JetBrainsMono-VariableFont_wght.ttf',
+	fontFamily: '"JetBrains Mono", sans-serif',
+	backgroundImageUrl: 'https://media.yadokari.party/assets/Yadokari-Boarding-Pass.png',
+	avatar: { x: 330, y: 250, size: 100 },
+	name: { x: 455, y: 295, font: '28px', color: '#000' },
+	acct: { x: 455, y: 318, font: '13px', color: '#707070' },
+	createdAt: { x: 455, y: 400, font: '28px', color: '#000' },
+	userCreation: { x: 650, y: 400, font: '28px', color: '#000' },
+	loggedInDays: { x: 750, y: 475, font: '28px', color: '#000' },
+	achievements: { x: 915, y: 202, font: '36px', color: '#ff9797' },
+};
+
+/**
+ * Canvasにウェルカムカードを描画するヘルパー関数
+ * @param ctx Canvasの2Dコンテキスト
+ * @param data 描画に必要なデータ
+ */
+async function drawWelcomeCardOnCanvas(ctx: CanvasRenderingContext2D, data: {
+	name: string;
+	username: string;
+	avatarUrl: string | null;
+	createdAt: string;
+	userCreationCount: number;
+	loggedInDays: number;
+	achievementsCount: number;
+}) {
+	// フォントと画像を並行して読み込む
+	const [fontface, bg, avatar] = await Promise.all([
+		new FontFace('JetBrains Mono', `url(${CARD_CONFIG.fontUrl})`).load(),
+		loadImage(CARD_CONFIG.backgroundImageUrl),
+		loadImage(data.avatarUrl ?? '/static-assets/avatar.png'),
+	]);
+
+	window.document.fonts.add(fontface);
+
+	// 背景
+	ctx.canvas.width = CARD_CONFIG.width;
+	ctx.canvas.height = CARD_CONFIG.height;
+	ctx.drawImage(bg, 0, 0, ctx.canvas.width, ctx.canvas.height);
+	ctx.save();
+
+	// アバター
+	ctx.beginPath();
+	ctx.arc(CARD_CONFIG.avatar.x + CARD_CONFIG.avatar.size / 2, CARD_CONFIG.avatar.y + CARD_CONFIG.avatar.size / 2, CARD_CONFIG.avatar.size / 2, 0, Math.PI * 2);
+	ctx.clip();
+	ctx.drawImage(avatar, CARD_CONFIG.avatar.x, CARD_CONFIG.avatar.y, CARD_CONFIG.avatar.size, CARD_CONFIG.avatar.size);
+	ctx.restore();
+
+	// 名前
+	ctx.fillStyle = CARD_CONFIG.name.color;
+	ctx.font = `${CARD_CONFIG.name.font} ${CARD_CONFIG.fontFamily}`;
+	ctx.fillText(data.name, CARD_CONFIG.name.x, CARD_CONFIG.name.y);
+
+	// Acct
+	ctx.fillStyle = CARD_CONFIG.acct.color;
+	ctx.font = `${CARD_CONFIG.acct.font} ${CARD_CONFIG.fontFamily}`;
+	ctx.fillText(`@${data.username}@${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`, CARD_CONFIG.acct.x, CARD_CONFIG.acct.y);
+
+	// 登録日
+	const createdAtDate = new Date(data.createdAt);
+	ctx.fillStyle = CARD_CONFIG.createdAt.color;
+	ctx.font = `${CARD_CONFIG.createdAt.font} ${CARD_CONFIG.fontFamily}`;
+	ctx.fillText(`${createdAtDate.getFullYear()}/${String(createdAtDate.getMonth() + 1).padStart(2, '0')}/${String(createdAtDate.getDate()).padStart(2, '0')}`, CARD_CONFIG.createdAt.x, CARD_CONFIG.createdAt.y);
+
+	// 登録番号
+	ctx.fillStyle = CARD_CONFIG.userCreation.color;
+	ctx.font = `${CARD_CONFIG.userCreation.font} ${CARD_CONFIG.fontFamily}`;
+	ctx.fillText(String(data.userCreationCount).padStart(6, '0'), CARD_CONFIG.userCreation.x, CARD_CONFIG.userCreation.y);
+
+	// 実績
+	ctx.fillStyle = CARD_CONFIG.achievements.color;
+	ctx.font = `${CARD_CONFIG.achievements.font} ${CARD_CONFIG.fontFamily}`;
+	ctx.fillText(String(data.achievementsCount).padStart(6, '0'), CARD_CONFIG.achievements.x, CARD_CONFIG.achievements.y);
+
+	// ログイン日数 (右寄せ)
+	ctx.save();
+	const loggedInDaysText = data.loggedInDays === 1 ? '1 Day' : `${data.loggedInDays.toLocaleString('en-US')} Days`;
+	ctx.fillStyle = CARD_CONFIG.loggedInDays.color;
+	ctx.font = `${CARD_CONFIG.loggedInDays.font} ${CARD_CONFIG.fontFamily}`;
+	ctx.textAlign = 'right';
+	ctx.fillText(loggedInDaysText, CARD_CONFIG.loggedInDays.x, CARD_CONFIG.loggedInDays.y);
+	ctx.restore();
+}
+
 async function drawCard() {
 	const canvas = canvasEl.value;
 	if (!canvas) return;
@@ -144,134 +245,66 @@ async function drawCard() {
 
 	canvasGenerating.value = true;
 
-	const fontface = new FontFace('JetBrains Mono', 'url(https://media.yadokari.party/assets/JetBrainsMono-VariableFont_wght.ttf)');
-
-	// 背景画像を読み込む
-	const bg = await loadImage('https://media.yadokari.party/assets/Yadokari-Boarding-Pass.png');
-	canvas.width = 1188;
-	canvas.height = 700;
-	ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-	ctx.save();
-
-	// ユーザーのアバターを描画
-	const avatar = await loadImage($i.avatarUrl ?? '/static-assets/avatar.png');
-	const AVATAR_X = 330;
-	const AVATAR_Y = 250;
-	const AVATAR_SIZE = 100;
-
-	// 円形に整形
-	ctx.beginPath();
-	ctx.arc(AVATAR_X + AVATAR_SIZE / 2, AVATAR_Y + AVATAR_SIZE / 2, AVATAR_SIZE / 2, 0, Math.PI * 2);
-	ctx.clip();
-	ctx.drawImage(avatar, AVATAR_X, AVATAR_Y, AVATAR_SIZE, AVATAR_SIZE);
-	ctx.restore();
-
-	await fontface.load();
-	window.document.fonts.add(fontface);
-
-	//userの名前を描画
-	ctx.fillStyle = '#000';
-	ctx.font = '28px "JetBrains Mono", sans-serif';
-	const name = editableName.value;
-	const NAME_X = 455;
-	const NAME_Y = 295;
-	ctx.fillText(name, NAME_X, NAME_Y);
-
-	//userのacctを描画
-	const username = $i.username;
-	const ACCT_X = 455;
-	const ACCT_Y = 318;
-	ctx.fillStyle = '#707070';
-	ctx.font = '13px "JetBrains Mono", sans-serif';
-	ctx.fillText(`@${username}@${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`, ACCT_X, ACCT_Y);
-
-	//userの登録日
-	const createdAt = new Date($i.createdAt);
-	const CREATED_AT_X = 455;
-	const CREATED_AT_Y = 400;
-	ctx.fillStyle = '#000';
-	ctx.font = '28px "JetBrains Mono", sans-serif';
-	ctx.fillText(`${createdAt.getFullYear()}/${String(createdAt.getMonth() + 1).padStart(2, '0')}/${String(createdAt.getDate()).padStart(2, '0')}`, CREATED_AT_X, CREATED_AT_Y);
-
-	//userの番号を描画
-	const USER_CREATION_X = 650;
-	const USER_CREATION_Y = 400;
-	ctx.fillStyle = '#000';
-	ctx.font = '28px "JetBrains Mono", sans-serif';
-	ctx.fillText(String(userCreationCount.value).padStart(6, '0'), USER_CREATION_X, USER_CREATION_Y);
-
-	//ログイン日数を描画
-	const loggedInDays = $i.loggedInDays;
-	const LOGGED_IN_DAYS_X = 750;
-	const LOGGED_IN_DAYS_Y = 475;
-	ctx.fillStyle = '#000';
-	ctx.font = '28px "JetBrains Mono", sans-serif';
-	ctx.textAlign = 'right';
-	// 1日の時には"1 Day"、それ以外は"X Days"と表示
-	if (loggedInDays === 1) {
-		ctx.fillText('1 Day', LOGGED_IN_DAYS_X, LOGGED_IN_DAYS_Y);
-	} else {
-		ctx.fillText(`${loggedInDays.toLocaleString('en-US')} Days`, LOGGED_IN_DAYS_X, LOGGED_IN_DAYS_Y);
+	try {
+		await drawWelcomeCardOnCanvas(ctx, {
+			name: editableName.value,
+			username: $i.username,
+			avatarUrl: $i.avatarUrl,
+			createdAt: $i.createdAt,
+			userCreationCount: userCreationCount.value,
+			loggedInDays: $i.loggedInDays,
+			//TODO: cheat実績を除外する
+			achievementsCount: $i.achievements.length,
+		});
+	} catch (error) {
+		console.error('Failed to draw welcome card:', error);
+		os.alert({
+			title: i18n.ts.error,
+			// Consider adding a specific i18n key for this message
+			text: i18n.ts._yadokari._welecomeCard.generationFailed ?? 'Failed to generate the card. Please try again.',
+			type: 'error',
+		});
+	} finally {
+		canvasGenerating.value = false;
 	}
-	ctx.textAlign = 'left';
-
-	//TODO: cheat実績を除外する
-	//userの実績の数
-	const archivements = $i.achievements./*filter(a => a.name !== 'cheat').*/length;
-	const ACHIEVEMENTS_X = 915;
-	const ACHIEVEMENTS_Y = 202;
-	ctx.fillStyle = '#ff9797';
-	ctx.font = '36px "JetBrains Mono", sans-serif';
-	ctx.fillText(String(archivements).padStart(6, '0'), ACHIEVEMENTS_X, ACHIEVEMENTS_Y);
-
-	canvasGenerating.value = false;
 }
 
-function dataURLtoBlob(dataurl: string) {
-	const arr = dataurl.split(',');
-	const mimeMatch = arr[0].match(/:(.*?);/);
-	if (!mimeMatch) return null;
-	const mime = mimeMatch[1];
-	const bstr = atob(arr[1]);
-	let n = bstr.length;
-	const u8arr = new Uint8Array(n);
-	while (n--) {
-		u8arr[n] = bstr.charCodeAt(n);
-	}
-	return new Blob([u8arr], { type: mime });
+function generateFilename(): string {
+	return `yadokari-welcome-card-${$i.username}-${new Date().getTime()}.png`;
 }
 
 async function postNote() {
-	if (!generatedImage.value) return;
+	if (!generatedImage.value?.blob) return;
 
-	const blob = dataURLtoBlob(generatedImage.value);
-	if (!blob) return;
+	try {
+		const formData = new FormData();
+		formData.append('file', generatedImage.value.blob);
+		formData.append('name', generateFilename());
+		formData.append('isSensitive', 'false');
+		formData.append('i', $i.token);
+		if (prefer.s.uploadFolder) {
+			formData.append('folderId', prefer.s.uploadFolder);
+		}
 
-	const formData = new FormData();
-	formData.append('file', blob);
-	formData.append('name', `yadokari-welcome-card-${$i.username}-${new Date().getTime()}.png`);
-	formData.append('isSensitive', 'false');
-	formData.append('i', $i.token);
-	if (prefer.s.uploadFolder) {
-		formData.append('folderId', prefer.s.uploadFolder);
-	}
-
-	window.fetch(apiUrl + '/drive/files/create', {
-		method: 'POST',
-		body: formData,
-	})
-		.then(response => response.json()).then(file => {
-			os.post({
-				initialVisibility: 'public',
-				initialFiles: [file],
-				initialText: shareText,
-			});
-		}).catch(error => {
-			os.alert({
-				title: i18n.ts.error,
-				type: 'error',
-			});
+		const response = await window.fetch(apiUrl + '/drive/files/create', {
+			method: 'POST',
+			body: formData,
 		});
+		const file = await response.json();
+
+		os.post({
+			initialVisibility: 'public',
+			initialFiles: [file],
+			initialText: shareText,
+		});
+	} catch (error) {
+		console.error('Failed to post note:', error);
+		os.alert({
+			title: i18n.ts.error,
+			text: i18n.ts._yadokari._welecomeCard.uploadAndNoteFailed,
+			type: 'error',
+		});
+	}
 }
 
 function postX() {
@@ -292,23 +325,35 @@ function postOtherMisskey() {
 }
 
 function download() {
-	if (!generatedImage.value) return;
-	const blob = dataURLtoBlob(generatedImage.value);
-	if (!blob) return;
+	if (!generatedImage.value?.url) return;
 
 	const link = window.document.createElement('a');
-	link.href = URL.createObjectURL(blob);
-	link.download = `yadokari-welcome-card-${$i.username}-${new Date().getTime()}.png`;
+	link.href = generatedImage.value.url;
+	link.download = generateFilename();
 	window.document.body.appendChild(link);
 	link.click();
 	window.document.body.removeChild(link);
-	URL.revokeObjectURL(link.href);
 }
 
 async function toSharePage() {
-	if (!canvasEl.value) return;
-	await drawCard();
-	generatedImage.value = canvasEl.value.toDataURL('image/png');
+	const canvas = canvasEl.value;
+	if (!canvas) return;
+
+	// 既存のオブジェクトURLがあれば無効化してメモリリークを防ぐ
+	if (generatedImage.value) {
+		URL.revokeObjectURL(generatedImage.value.url);
+	}
+
+	//await drawCard(); // 最終描画
+
+	const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
+	if (!blob) {
+		// 既存のi18nキーを再利用
+		os.alert({ title: i18n.ts.error, text: i18n.ts._yadokari._welecomeCard.generationFailed ?? 'Failed to generate the card.', type: 'error' });
+		return;
+	}
+
+	generatedImage.value = { blob, url: URL.createObjectURL(blob) };
 	step.value = 'share';
 }
 
@@ -317,22 +362,29 @@ function cancel() {
 	dialogEl.value?.close();
 }
 
-watchEffect(async () => {
-	if (step.value !== 'creation' || !canvasEl.value) {
-		return;
-	}
-
-	if (generatedImage.value) {
-		const canvas = canvasEl.value;
-		const ctx = canvas.getContext('2d');
+watch([step, canvasEl], async ([newStep, newCanvas]) => {
+	// 'share'ページから'creation'ページに戻ってきた時に、
+	// canvas要素が利用可能になったら、生成済みの画像を再描画する
+	if (newStep === 'creation' && newCanvas && generatedImage.value?.url) {
+		const ctx = newCanvas.getContext('2d');
 		if (!ctx) return;
 
 		canvasGenerating.value = true;
-		const img = await loadImage(generatedImage.value);
-		canvas.width = img.width;
-		canvas.height = img.height;
-		ctx.drawImage(img, 0, 0);
-		canvasGenerating.value = false;
+		try {
+			const img = await loadImage(generatedImage.value.url);
+			newCanvas.width = img.width;
+			newCanvas.height = img.height;
+			ctx.drawImage(img, 0, 0);
+		} catch (error) {
+			console.error('Failed to redraw image:', error);
+			os.alert({
+				title: i18n.ts.error,
+				text: i18n.ts._yadokari._welecomeCard.generationFailed,
+				type: 'error',
+			});
+		} finally {
+			canvasGenerating.value = false;
+		}
 	}
 });
 
@@ -352,7 +404,7 @@ watchEffect(async () => {
 	padding: 20px;
 }
 
-//横並びレイアウトにしたい
+//横並びレイアウトにしたい gridにしよう
 .previewPage {
 	margin: -20px;
 	padding: 20px;
