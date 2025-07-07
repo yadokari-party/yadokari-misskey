@@ -27,7 +27,7 @@ jobs:
                 -name "*.mjs" -and -not -name '*.config.mjs' -o \
                 -name "*.scss" -o \
                 -name "*.ts" -and -not -name '*.config.ts' -o \
-                -name "*.vue" -and -not -name 'Yk*.ts' \
+                -name "*.vue" -and -not -name 'Yk*.vue' -o \
               ')' -and \
               -not -name '*eslint*'
           }
